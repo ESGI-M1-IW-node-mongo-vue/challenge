@@ -3,7 +3,7 @@
 - Barre de recherche : par CP, ville, artiste, styles, par dates
 - un bouton login pour les tatoueurs 
 - sections avec étapes à suivre
-- sections liste des styles avec illustation -> qui fait une recherche sur le style sélectioné 
+- sections liste des styles avec illustration -> qui fait une recherche sur le style sélectioné 
 - possibilité de recherche par tatoueurs ou par flashs
 
 ### Résultats 
@@ -16,7 +16,7 @@
 
 - Image
 - localisation
-- descriptin
+- description
 - galerie photos
 - avis 
 - style 
