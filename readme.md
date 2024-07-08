@@ -4,6 +4,7 @@
 - un bouton login pour les tatoueurs 
 - sections avec étapes à suivre
 - sections liste des styles avec illustation -> qui fait une recherche sur le style sélectioné 
+- possibilité de recherche par tatoueurs ou par flashs
 
 ### Résultats 
 
