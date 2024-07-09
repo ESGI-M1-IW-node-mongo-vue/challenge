@@ -3,7 +3,7 @@
     <div class="grid grid-cols-12">
       <DashboardMenu class="col-span-3" />
       <div class="col-span-9 p-10 flex flex-col gap-y-6">
-        <VueDatePicker v-model="date" :format="dateFormatted" :enable-time-picker="false" auto-apply />
+        <VueDatePicker v-model="date" :format="dateFormatted" :enable-time-picker="false" auto-apply :clearable="false" />
         <ListingMeeting :data="reservationsByDays" @refresh="getReservations" />
       </div>
     </div>

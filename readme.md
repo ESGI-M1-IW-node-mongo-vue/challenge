@@ -31,12 +31,12 @@
 - prenom
 - adresse mail
 - telephone
-- choix de la date sous forme de liste déroulante ( crénaux de 30 minutes )
+- choix de la date sous forme de liste déroulante ( crénaux de 1 heure )
 
 ### Côté admin pour les tatoueurs
 
 - tableaux pour afficher les rdv possibilités de filter par jours / mois
-- possibilités de bloquer un crénaux 
+- possibilités de bloquer / supprimer un crénaux 
 - modifier le profil 
 
 ### Côté admin
