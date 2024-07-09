@@ -2,7 +2,6 @@
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiStar } from "@mdi/js";
 import { mdiMapMarker } from "@mdi/js";
-import Reservation from "@/components/Reservation.vue";
 </script>
 
 <template>
@@ -219,5 +218,4 @@ import Reservation from "@/components/Reservation.vue";
       </section>
     </div>
   </main>
-  <Reservation />
 </template>
