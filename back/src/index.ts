@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { DbConnect } from "./db";
 import styles from "./routes/styles";
+import auth from "./routes/auth";
 import artists from "./routes/artists";
 
 const app = new Hono();
@@ -13,6 +14,7 @@ console.log(`Server is running on port ${port}`);
 // 3000/api/styles
 
 app.route("/api", styles);
+app.route("/api", auth);
 app.route("/api", artists);
 
 app.all("*", (c) => {
