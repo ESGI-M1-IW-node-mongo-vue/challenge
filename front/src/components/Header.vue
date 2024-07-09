@@ -1,65 +1,54 @@
 <template>
-  <header class="bg-white">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-      <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-        </a>
-      </div>
-      <div class="flex lg:hidden">
-        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
-          <span class="sr-only">Open main menu</span>
-          <svg-icon type="mdi" :path="mdiMenu"></svg-icon>
-        </button>
-      </div>
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-      </div>
-    </nav>
-    <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
-      <div class="fixed inset-0 z-10" />
-      <DialogPanel class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-        <div class="flex items-center justify-between">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-          </a>
-          <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
-            <span class="sr-only">Close menu</span>
-            <svg-icon type="mdi" :path="mdiClose"></svg-icon>
+  <div class="h-screen relative">
+    <div class="flex justify-center items-center">
+      <img src="../assets/img/fond.jpg" alt="fond tattoo" class="w-full h-full object-cover" style="height: calc(100vh - 80px)">
+      <div class="absolute top-0 left-0 w-full bg-black opacity-50" style="height: calc(100vh - 80px)"></div>
+
+      <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
+        <h1 class="text-white mb-4 text-6xl">Trouver votre flash et votre tatoueur</h1>
+        <h2 class="text-white mb-10 text-xl">La plus grande sélection de flash prêts à vous accueillir</h2>
+        <div class="flex bg-white rounded-full mb-20">
+          <input type="text" placeholder="Ville, code postal, tatoueur" class="rounded-full rounded-r-none pl-4 border-r-2 sm:w-96 w-20 focus:outline-none">
+          <select class="rounded-full rounded-l-none sm:w-56 w-20 focus:outline-none pl-3">
+            <option v-for="option in options" :key="option.value" :value="option.value">{{ option.text }}</option>
+          </select>
+          <button class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50">
+            <svg-icon type="mdi" :path="mdiMagnify"></svg-icon>
+            Recherchez
           </button>
         </div>
-        <div class="mt-6 flow-root">
-          <div class="-my-6 divide-y divide-gray-500/10">
-            <div class="space-y-2 py-6">
-              <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
-            </div>
-            <div class="py-6">
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
-            </div>
-          </div>
+        <h3 class="text-white text-2xl">Réservez votre futur flash en 3 clics</h3>
+      </div>
+    </div>
+    <div class="absolute bottom-0 flex justify-center">
+      <div class="bg-white rounded-lg p-12 flex items-start w-11/12 sm:w-8/12 gap-4">
+        <div class="flex flex-col items-start text-start">
+          <svg-icon type="mdi" :path="mdiMagnify" class="text-primary mb-2" size="50"></svg-icon>
+          <h4 class="font-bold text-xl mb-2">Recherchez votre flash</h4>
+          <p class="text-gray-400"  >Recherchez un flash selon les critères que vous souhaitez.</p>
         </div>
-      </DialogPanel>
-    </Dialog>
-  </header>
+        <div class="flex flex-col items-start text-start">
+          <svg-icon type="mdi" :path="mdiMessageFast" class="text-primary mb-2" size="50"></svg-icon>
+          <h4 class="font-bold text-xl mb-2">Entrez en contact</h4>
+          <p class="text-gray-400">Contactez votre futur tatoueur par téléphone ou via notre formulaire.</p>
+        </div>
+        <div class="flex flex-col items-start text-start">
+          <svg-icon type="mdi" :path="mdiCalendarBlankMultiple" class="text-primary mb-2" size="50"></svg-icon>
+          <h4 class="font-bold text-xl mb-2">Prenez rendez-vous</h4>
+          <p class="text-gray-400">Convenez d’un rendez-vous avec votre prochain tatoueur.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiMenu, mdiClose } from '@mdi/js';
-import { ref } from 'vue'
-import { Dialog, DialogPanel } from '@headlessui/vue'
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiMagnify, mdiMessageFast, mdiCalendarBlankMultiple } from '@mdi/js';
 
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
-
-const mobileMenuOpen = ref(false)
+const options = [
+  { value: 'option1', text: 'Tous les styles' },
+  { value: 'option2', text: 'Option 2' },
+  { value: 'option3', text: 'Option 3' }
+];
 </script>
