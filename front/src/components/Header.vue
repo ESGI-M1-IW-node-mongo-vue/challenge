@@ -53,10 +53,7 @@
         </h3>
       </div>
     </div>
-    <div class="sm:absolute bottom-0 flex justify-center">
-      <div
-        class="bg-white rounded-lg p-12 sm:flex items-start w-11/12 sm:w-10/12 gap-4 shadow-lg translate-y-7"
-      >
+      <div class="absolute left-1/2 bottom-0 -translate-x-1/2 bg-white rounded-lg p-12 w-5/6 flex items-center justify-center gap-4 shadow-lg translate-y-5">
         <div class="flex flex-col items-start text-start">
           <svg-icon
             type="mdi"
@@ -95,7 +92,6 @@
           </p>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
