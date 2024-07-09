@@ -4,6 +4,7 @@ import { DbConnect } from "./db";
 import styles from "./routes/styles";
 import auth from "./routes/auth";
 import artists from "./routes/artists";
+import { cors } from "hono/cors";
 
 const app = new Hono();
 await DbConnect();
@@ -11,7 +12,7 @@ await DbConnect();
 const port = 3000;
 console.log(`Server is running on port ${port}`);
 
-// 3000/api/styles
+app.use("/api/*", cors());
 
 app.route("/api", styles);
 app.route("/api", auth);
