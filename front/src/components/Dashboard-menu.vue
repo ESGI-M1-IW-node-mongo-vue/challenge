@@ -7,7 +7,7 @@
       </div>
       <div class="w-full h-[1px] bg-gray-500"></div>
       <div v-for="item in menu" @click="goTo(item.routeName)" class="flex items-center gap-x-4 cursor-pointer p-4"
-           :class="item.selected ? 'bg-red-500 rounded-full' : ''">
+           :class="item.selected ? 'bg-primary rounded-full' : ''">
         <svg-icon :class="item.selected ? 'text-white' : ''" :path="item.icon" type="mdi" />
         <p :class="item.selected ? 'text-white' : ''">{{item.text}}</p>
       </div>
