@@ -21,7 +21,7 @@
         <h2 class="text-white mb-10 text-xl">
           La plus grande sélection de flash prêts à vous accueillir
         </h2>
-        <div class="flex bg-white rounded-full mb-20">
+        <div class="flex bg-white rounded-full mb-32">
           <input
             type="text"
             placeholder="Ville, code postal, tatoueur"
@@ -42,7 +42,7 @@
           </select>
           <RouterLink
             :to="searchUrl"
-            class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50"
+            class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50 transition-all ease-out  "
           >
             <svg-icon type="mdi" :path="mdiMagnify"></svg-icon>
             Rechercher
@@ -53,9 +53,9 @@
         </h3>
       </div>
     </div>
-    <div class="absolute bottom-0 flex justify-center">
+    <div class="sm:absolute bottom-0 flex justify-center">
       <div
-        class="bg-white rounded-lg p-12 flex items-start w-11/12 sm:w-8/12 gap-4"
+        class="bg-white rounded-lg p-12 sm:flex items-start w-11/12 sm:w-10/12 gap-4 shadow-lg translate-y-7"
       >
         <div class="flex flex-col items-start text-start">
           <svg-icon

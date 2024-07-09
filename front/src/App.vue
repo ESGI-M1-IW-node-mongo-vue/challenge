@@ -2,6 +2,7 @@
 import {RouterView, useRoute} from "vue-router";
 import {computed} from "vue";
 import navBar from "@/components/navBar.vue";
+import Footer from "@/components/Footer.vue";
 
 const route = useRoute();
 const isAdmin = computed(() => route.path.includes("admin"));
@@ -11,4 +12,5 @@ const isAdmin = computed(() => route.path.includes("admin"));
 <template>
   <navBar v-if="!isAdmin" />
   <RouterView />
+  <Footer />
 </template>
