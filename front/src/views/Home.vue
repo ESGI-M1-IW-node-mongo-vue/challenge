@@ -9,5 +9,5 @@
 
 <script setup>
 import Header from "@/components/Header.vue";
-import ListStyleAccueil from "@/components/listStyleAccueil.vue";
+import ListStyleAccueil from "@/components/ListStyleAccueil.vue";
 </script>
