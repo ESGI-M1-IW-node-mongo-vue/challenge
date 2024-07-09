@@ -7,8 +7,8 @@
       </div>
       <button class="bg-white border-2 border-primary rounded-full px-6 h-1/2 py-2 hover:bg-primary hover:text-white transition-all ease-in">À Suivre</button>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-      <div v-for="style in styles" :key="style.name" class="relative rounded-lg shadow-lg overflow-hidden h-52 w-40">
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-8 justify-around items-center">
+      <div v-for="style in styles" :key="style.name" class="relative rounded-lg shadow-lg overflow-hidden h-52 w-full">
         <img :src="style.image" :alt="style.name" class="w-full h-full object-cover">
         <div class="absolute bottom-0 left-0 w-full bg-white p-2 text-center">
           <h5 class="font-bold text-lg">{{ style.name }}</h5>
