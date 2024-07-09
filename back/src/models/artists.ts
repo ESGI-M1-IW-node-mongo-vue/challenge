@@ -12,7 +12,7 @@ export interface IArtist {
   styles?: IStyle[];
 }
 
-const artistSchema = new Schema<IArtist>({
+export const artistSchema = new Schema<IArtist>({
   name: { type: String, required: true, lowercase: true, trim: true },
   email: { type: String, required: true, lowercase: true, trim: true },
   profile_img: { type: String, required: true },
