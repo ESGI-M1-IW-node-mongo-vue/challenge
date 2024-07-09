@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-black text-white rounded-lg overflow-hidden" style="height: 400px;">
+  <div id="news" class="relative bg-black text-white rounded-lg overflow-hidden" style="height: 400px;">
     <img src="../assets/img/fond.jpg" alt="Tattoo Background" class="absolute inset-0 w-full h-full object-cover opacity-30">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="relative z-10 flex flex-col justify-center items-center h-full text-center p-8">

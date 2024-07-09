@@ -20,8 +20,7 @@
         <h3 class="text-white text-2xl">Réservez votre futur flash en 3 clics</h3>
       </div>
     </div>
-    <div class="sm:absolute bottom-0 flex justify-center">
-      <div class="bg-white rounded-lg p-12 sm:flex items-start w-11/12 sm:w-10/12 gap-4 shadow-lg translate-y-7">
+      <div class="absolute left-1/2 bottom-0 -translate-x-1/2 bg-white rounded-lg p-12 w-5/6 flex items-center justify-center gap-4 shadow-lg translate-y-5">
         <div class="flex flex-col items-start text-start">
           <svg-icon type="mdi" :path="mdiMagnify" class="text-primary mb-2" size="50"></svg-icon>
           <h4 class="font-bold text-xl mb-2">Recherchez votre flash</h4>
@@ -38,7 +37,6 @@
           <p class="text-gray-400">Convenez d’un rendez-vous avec votre prochain tatoueur.</p>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
