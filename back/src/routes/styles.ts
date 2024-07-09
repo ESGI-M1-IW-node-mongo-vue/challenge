@@ -5,7 +5,7 @@ import { isValidObjectId } from "mongoose";
 const api = new Hono().basePath("/styles");
 
 api.get("/", async (c) => {
-  return c.json(await Style.find());
+  return c.json(await Style.find().sort({ name: 1 }));
 });
 
 api.get("/:id", async (c) => {
