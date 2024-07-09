@@ -42,7 +42,7 @@
           </select>
           <RouterLink
             :to="searchUrl"
-            class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50 transition-all ease-out  "
+            class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50 transition-all ease-out"
           >
             <svg-icon type="mdi" :path="mdiMagnify"></svg-icon>
             Rechercher
@@ -101,8 +101,8 @@
 
 <script setup>
 import SvgIcon from "@jamescoyle/vue-icon";
-import {mdiCalendarBlankMultiple, mdiMagnify, mdiMessageFast} from "@mdi/js";
-import {computed, ref} from "vue";
+import { mdiCalendarBlankMultiple, mdiMagnify, mdiMessageFast } from "@mdi/js";
+import { computed, ref } from "vue";
 
 const styles = ref([]);
 const selectedStyle = ref({});
