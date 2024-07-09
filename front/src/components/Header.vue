@@ -7,12 +7,12 @@
       <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
         <h1 class="text-white mb-4 text-6xl">Trouver votre flash et votre tatoueur</h1>
         <h2 class="text-white mb-10 text-xl">La plus grande sélection de flash prêts à vous accueillir</h2>
-        <div class="flex bg-white rounded-full mb-20">
+        <div class="flex bg-white rounded-full mb-32">
           <input type="text" placeholder="Ville, code postal, tatoueur" class="rounded-full rounded-r-none pl-4 border-r-2 sm:w-96 w-20 focus:outline-none">
           <select class="rounded-full rounded-l-none sm:w-56 w-20 focus:outline-none pl-3">
             <option v-for="option in options" :key="option.value" :value="option.value">{{ option.text }}</option>
           </select>
-          <button class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50">
+          <button class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50 transition-all ease-out  ">
             <svg-icon type="mdi" :path="mdiMagnify"></svg-icon>
             Recherchez
           </button>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="sm:absolute bottom-0 flex justify-center">
-      <div class="bg-white rounded-lg p-12 sm:flex items-start w-11/12 sm:w-8/12 gap-4 shadow-2xl translate-y-7">
+      <div class="bg-white rounded-lg p-12 sm:flex items-start w-11/12 sm:w-10/12 gap-4 shadow-lg translate-y-7">
         <div class="flex flex-col items-start text-start">
           <svg-icon type="mdi" :path="mdiMagnify" class="text-primary mb-2" size="50"></svg-icon>
           <h4 class="font-bold text-xl mb-2">Recherchez votre flash</h4>
