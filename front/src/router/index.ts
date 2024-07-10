@@ -48,4 +48,15 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.fullPath.startsWith("/admin")) {
+    const value = localStorage.getItem("token");
+    if (!value) {
+      next("/login?redirectTo=" + to.fullPath);
+      return;
+    }
+  }
+  next();
+});
+
 export default router;
