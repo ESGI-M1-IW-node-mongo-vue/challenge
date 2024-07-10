@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { Style } from "../models/styles";
 import { isValidObjectId } from "mongoose";
+import { SaveOnS3 } from "../aws-s3";
 
 const api = new Hono().basePath("/styles");
 
@@ -19,8 +20,9 @@ api.get("/:id", async (c) => {
 });
 
 api.post("/", async (c) => {
-  const body = await c.req.json();
+  const body = await c.req.parseBody();
   try {
+    body.image = await SaveOnS3(body["image"] as File);
     const newStyle = new Style(body);
     const saveStyle = await newStyle.save();
     return c.json(saveStyle, 201);
