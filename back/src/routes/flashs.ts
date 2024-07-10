@@ -1,11 +1,32 @@
 import { Hono } from "hono";
 import { Flash } from "../models/flashs";
 import { SaveOnS3 } from "../aws-s3";
+import { isValidObjectId } from "mongoose";
 
 const api = new Hono().basePath("/flashs");
 
 api.get("/", async (c) => {
   return c.json(await Flash.find());
+});
+
+api.get("/:id", async (c) => {
+  const _id = c.req.param("id");
+
+  if (isValidObjectId(_id)) {
+    const oneFlash = await Flash.findOne({ _id });
+    return c.json(oneFlash);
+  }
+  return c.json({ msg: "ObjectId malformed" }, 400);
+});
+
+api.delete("/:id", async (c) => {
+  const _id = c.req.param("id");
+  const tryToDelete = await Flash.deleteOne({ _id });
+  const { deletedCount } = tryToDelete;
+  if (deletedCount) {
+    return c.json({ msg: "DELETE done" });
+  }
+  return c.json({ msg: "not found" }, 404);
 });
 
 api.post("/", async (c) => {
