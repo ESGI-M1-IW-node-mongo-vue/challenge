@@ -5,15 +5,27 @@ import { isValidObjectId } from "mongoose";
 const api = new Hono().basePath("/artists");
 
 api.get("/", async (c) => {
-  const googleId = c.req.query("googleId");
-  if(!googleId){
+    const styleQuery = c.req.query("style");
+    const googleId = c.req.query("googleId");
+  if (!styleQuery && !googleId) {
     return c.json(await Artist.find());
   }
 
-  const oneArt = await Artist.find({
-    google_id: googleId
-  });
-  return c.json(oneArt);
+  if(styleQuery){
+      const artists = await Artist.find({
+          styles: { $in: styleQuery + "" },
+      }).populate("styles");
+      return c.json(artists);
+  }
+
+  if(googleId){
+      const oneArt = await Artist.find({
+          google_id: googleId
+      });
+      return c.json(oneArt);
+  }
+
+return c.json({ msg: "ObjectId malformed" }, 400);
 });
 
 api.get("/:id", async (c) => {
