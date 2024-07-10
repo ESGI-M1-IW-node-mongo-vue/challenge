@@ -40,14 +40,14 @@ const allReservations = ref([]);
 
 const getReservations = function (filterDate: Date) {
   const dateIso = filterDate.toISOString();
-  fetch(
-    `http://localhost:3000/api/reservations?date=${dateIso}&artistId=${dateIso}`,
-    {
-      method: "get",
-    }
-  ).then(async (result) => {
+  fetch(`http://localhost:3000/api/reservations?date=${dateIso}`, {
+    method: "get",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }).then(async (result) => {
     const resultJson = await result.json();
-    allReservations.value = resultJson.sort(function (a, b) {
+    allReservations.value = resultJson.sort(function (a: any, b: any) {
       return a.start_date < b.start_date
         ? -1
         : a.start_date > b.start_date

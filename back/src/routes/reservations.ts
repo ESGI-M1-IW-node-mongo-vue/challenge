@@ -1,13 +1,31 @@
 import { Hono } from "hono";
 import { Reservation } from "../models/reservations";
+import { decode } from "hono/jwt";
+import { Artist } from "../models/artists";
 
 const api = new Hono().basePath("/reservations");
 
 api.get("/", async (c) => {
-  const { date, artistId } = c.req.query();
-  if (!date && !artistId) {
+  const { date } = c.req.query();
+  if (!date) {
     return c.json(await Reservation.find());
   }
+
+  //Get token from headers
+  const bearer = c.req.header("Authorization");
+  if (!bearer) {
+    return c.json({ msg: "Unauthorized" }, 401);
+  }
+
+  //Get GoogleId from token
+  const token = bearer.split(" ")[1];
+
+  //Get GoogleId from token
+  const { payload: decoded }: any = decode(token);
+
+  //Get artistId from GoogleId
+  const artistId = await Artist.findOne({ google_id: decoded.sub });
+
   const dateFilter = new Date(date).setHours(0, 0, 0, 0);
   const reservations = await Reservation.find({
     start_date: {
