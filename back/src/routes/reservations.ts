@@ -4,16 +4,17 @@ import { Reservation } from "../models/reservations";
 const api = new Hono().basePath("/reservations");
 
 api.get("/", async (c) => {
-  const dateQuery = c.req.query("date");
-  if (!dateQuery) {
+  const { date, artistId } = c.req.query();
+  if (!date && !artistId) {
     return c.json(await Reservation.find());
   }
-  const dateFilter = new Date(dateQuery).setHours(0, 0, 0, 0);
+  const dateFilter = new Date(date).setHours(0, 0, 0, 0);
   const reservations = await Reservation.find({
     start_date: {
       $gte: dateFilter,
       $lt: new Date(dateFilter).setDate(new Date(dateFilter).getDate() + 1),
     },
+    artist: artistId,
   });
   return c.json(reservations);
 });
@@ -27,6 +28,21 @@ api.post("/", async (c) => {
   } catch (error: any) {
     return c.json(error._message, 400);
   }
+});
+
+api.put("/:id", async (c) => {
+  const _id = c.req.param("id");
+  const body = await c.req.json();
+  const q = {
+    _id,
+  };
+  const updateQuery = {
+    ...body,
+  };
+  const tryToUpdate = await Reservation.findOneAndUpdate(q, updateQuery, {
+    new: true,
+  });
+  return c.json(tryToUpdate, 200);
 });
 
 api.delete("/:id", async (c) => {
