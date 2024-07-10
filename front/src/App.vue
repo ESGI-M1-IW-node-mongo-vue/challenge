@@ -12,5 +12,5 @@ const isAdmin = computed(() => route.path.includes("admin"));
 <template>
   <navBar v-if="!isAdmin" />
   <RouterView />
-  <Footer />
+  <Footer v-if="!isAdmin" />
 </template>

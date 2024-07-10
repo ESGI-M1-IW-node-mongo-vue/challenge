@@ -1,6 +1,10 @@
 <template>
   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-y-2" v-if="props.data.length > 0">
+        <p class="font-bold text-3xl">Liste de vos rendez-vous :</p>
+        <p class="text-gray-500 text-lg"><span class="text-primary font-bold">{{ props.data.length }}</span> au total</p>
+      </div>
       <table class="min-w-full divide-y divide-gray-300" v-if="props.data.length > 0">
         <thead>
         <tr>
@@ -8,9 +12,6 @@
           <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Mail</th>
           <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Téléphone</th>
           <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Créneaux</th>
-          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-            <span class="sr-only">Edit</span>
-          </th>
         </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
