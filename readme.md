@@ -38,6 +38,12 @@
 - tableaux pour afficher les rdv possibilités de filter par jours / mois
 - possibilités de bloquer / supprimer un crénaux 
 - modifier le profil 
+- nom ----
+- img !!!!!!!!!!!!!!!!!!!!!!
+- desc ------
+- addresse ----
+- tel ------
+- email ------
 
 ### Côté admin
 

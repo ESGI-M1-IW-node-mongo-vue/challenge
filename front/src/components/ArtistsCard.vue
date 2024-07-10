@@ -13,9 +13,9 @@
           <svg-icon
               type="mdi"
               :path="mdiMapMarker"
-              class="text-orange-500"
+              class="text-orange-500 flex-1"
           ></svg-icon>
-          <p>{{ artist.city }}</p>
+          <p class="flex-1">{{ artist.address }}</p>
         </div>
         <p>|</p>
         <div class="flex gap-2">
@@ -50,6 +50,11 @@ const props = defineProps({
   artist: {
     type: Object,
     required: true
+  },
+  artistPage:{
+    type:Boolean,
+    required: false,
+    default: false
   }
 });
 </script>
