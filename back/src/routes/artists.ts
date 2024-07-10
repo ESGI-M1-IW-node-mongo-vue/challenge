@@ -5,7 +5,15 @@ import { isValidObjectId } from "mongoose";
 const api = new Hono().basePath("/artists");
 
 api.get("/", async (c) => {
-  return c.json(await Artist.find());
+  const styleQuery = c.req.query("style");
+  if (!styleQuery) {
+    return c.json(await Artist.find());
+  }
+  console.log(styleQuery, "styleQuery");
+  const artists = await Artist.find({
+    styles: { $in: styleQuery + "" },
+  }).populate("styles");
+  return c.json(artists);
 });
 
 api.get("/:id", async (c) => {
