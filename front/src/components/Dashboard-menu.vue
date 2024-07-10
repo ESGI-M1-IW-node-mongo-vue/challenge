@@ -16,7 +16,7 @@
 </template>
 <script setup>
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiBookOutline, mdiAccountBoxOutline } from '@mdi/js';
+import { mdiBookOutline, mdiAccountBoxOutline, mdiDrawPen } from '@mdi/js';
 import {ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
@@ -34,6 +34,12 @@ const menu = ref([
         text:"Profil",
         routeName:"profile",
         icon: mdiAccountBoxOutline,
+        selected:false,
+      },
+      {
+        text:"Flash",
+        routeName:"flash",
+        icon: mdiDrawPen,
         selected:false,
       }
     ]

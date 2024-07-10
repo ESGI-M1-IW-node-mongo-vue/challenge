@@ -5,6 +5,7 @@ import Meeting from "@/views/Meeting.vue";
 import Profile from "@/views/Profile.vue";
 import ResultSearch from "@/views/ResultSearch.vue";
 import Artist from "@/views/Artist.vue";
+import AdminFlash from "@/views/AdminFlash.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
           path: "profile",
           name: "profile",
           component: Profile,
+        },
+        {
+          path: "flash",
+          name: "flash",
+          component: AdminFlash,
         },
       ],
     },
