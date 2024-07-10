@@ -19,7 +19,7 @@
             <hr class="h-0 bg-slate-400 rounded-lg" />
 
             <div class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4">
-              <ArtistCard v-for="artist in allArtists" :key="artist.id" :artist="artist" />
+              <ArtistCard v-for="artist in allArtists" :key="artist._id" :artist="artist" />
             </div>
           </div>
         </div>
@@ -45,7 +45,8 @@
 
 <script setup>
 import { ref } from "vue";
-import ArtistCard from "../components/ArtistsCard.vue";
+import ArtistCard from '../components/ArtistsCard.vue';
+
 const styles = ref([]);
 const allArtists = ref([]);
 

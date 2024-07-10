@@ -2,8 +2,9 @@
   <article class="flex flex-col gap-6 bg-white">
     <img
         class="h-48 object-cover object-center"
-        :src="artist.image"
+        :src="artist.profile_img"
         :alt="artist.name"
+        referrerpolicy="no-referrer"
     />
     <div class="flex flex-col gap-6 bg-white p-5">
       <p class="text-xl font-semibold text-center">{{ artist.name }}</p>
