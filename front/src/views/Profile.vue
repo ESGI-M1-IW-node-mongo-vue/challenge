@@ -15,7 +15,7 @@
               <div>
                 <label class="block text-sm font-semibold leading-6 text-gray-900">Email</label>
                 <div class="mt-2.5">
-                  <input v-model="infosUser.email" type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                  <input v-model="infosUser.email" type="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                 </div>
               </div>
               <div>
@@ -49,7 +49,9 @@
 <script setup>
 import DashboardMenu from "@/components/Dashboard-menu.vue";
 import {ref} from "vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const jwt = localStorage.getItem("token")
 
 const googleId = ref(null)
@@ -74,7 +76,7 @@ fetch(`http://localhost:3000/api/artists?googleId=${googleId.value}`, {
   infosUser.value = resultJson[0]
 })
 
-const save = function (){
+const save = async function (){
   const body = {
     "name": infosUser.value.name || "",
     "email": infosUser.value.email || "",
@@ -87,13 +89,15 @@ const save = function (){
     "description": infosUser.value.description || "",
     "lastname": ""
   }
-  fetch(`http://localhost:3000/api/artists/${infosUser.value._id}`, {
+  await fetch(`http://localhost:3000/api/artists/${infosUser.value._id}`, {
     method: "put",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(body)
   }).then(async(result) => {
     console.log(result)
   })
+
+  await router.push({name:"profile"})
 }
 
 

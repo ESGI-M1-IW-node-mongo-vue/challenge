@@ -13,9 +13,9 @@
           <svg-icon
               type="mdi"
               :path="mdiMapMarker"
-              class="text-orange-500 flex-1"
+              class="text-orange-500"
           ></svg-icon>
-          <p class="flex-1">{{ artist.address }}</p>
+          <p>{{ artist.address }}</p>
         </div>
         <p>|</p>
         <div class="flex gap-2">
