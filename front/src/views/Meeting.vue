@@ -9,7 +9,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import DashboardMenu from "@/components/Dashboard-menu.vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -20,7 +20,7 @@ import ListingMeeting from "@/components/ListingMeeting.vue";
 
 const date = ref(new Date())
 
-const dateFormatted = function (date){
+const dateFormatted = function (date: Date){
   return format(date,"eeee dd MMMM u", {
     locale: fr
   })
@@ -32,10 +32,9 @@ watch(date,(newValue) => {
 
 const allReservations = ref([])
 
-const getReservations = function (filterDate){
-  const dateIso = formatISO(filterDate)
-  console.log(dateIso)
-  fetch(`http://localhost:3000/api/reservations`, {
+const getReservations = function (filterDate: Date){
+  const dateIso = filterDate.toISOString()
+  fetch(`http://localhost:3000/api/reservations?date=${dateIso}`, {
     method: "get",
   }).then(async(result) => {
     const resultJson = await result.json()
