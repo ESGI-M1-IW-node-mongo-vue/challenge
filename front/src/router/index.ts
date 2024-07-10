@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import Meeting from "@/views/Meeting.vue";
 import Profile from "@/views/Profile.vue";
 import ResultSearch from "@/views/ResultSearch.vue";
+import Artist from "@/views/Artist.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
       path: "/result",
       name: "result",
       component: ResultSearch,
+    },
+    {
+      path: "/artist/:id",
+      name: "artist",
+      component: Artist,
     },
     {
       path: "/admin",

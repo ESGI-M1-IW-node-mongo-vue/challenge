@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IStyle } from "./styles";
+import {IFlash} from "./flashs";
 
 export interface IArtist {
   name: string;
@@ -10,6 +11,7 @@ export interface IArtist {
   description?: string;
   address?: string;
   styles?: IStyle[];
+  flashs?: IFlash[];
 }
 
 export const artistSchema = new Schema<IArtist>({
@@ -21,6 +23,7 @@ export const artistSchema = new Schema<IArtist>({
   description: { type: String },
   address: { type: String },
   styles: [{ type: Schema.Types.ObjectId, ref: "styles" }],
+  flashs: [{ type: Schema.Types.ObjectId, ref: "flashs" }],
 });
 
 export const Artist = model<IArtist>("artists", artistSchema);
