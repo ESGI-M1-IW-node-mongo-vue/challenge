@@ -63,6 +63,7 @@ const route = useRoute();
 watch(route, () => {
   const location = route.query.location;
   const style = route.query.style;
+  const flashOrArtist = route.query.flashOrArtist ?? "artist";
 
   const searchParams = new URLSearchParams();
 

@@ -40,6 +40,9 @@ const searchUrl = computed(() => {
   if (location.value) {
     searchParams.append("location", location.value);
   }
+
+  searchParams.append("flashOrArtist", "flash");
+
   return `/result${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 });
 
