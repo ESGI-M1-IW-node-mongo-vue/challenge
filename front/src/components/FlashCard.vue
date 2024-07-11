@@ -1,23 +1,26 @@
 <template>
-  <li :class="flash.is_booked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'" class="inline-flex w-64 flex-col text-center lg:w-auto">
+  <li :class="flash.is_booked ? onArtistPage ? 'opacity-50 cursor-not-allowed' : '' : onArtistPage ? 'cursor-pointer' : ''" class="inline-flex w-64 flex-col text-center lg:w-auto">
     <div class="group relative">
-      <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200">
-        <img :src="flash.img || 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg'" :alt="flash.name" :class="flash.is_booked ? '' : 'group-hover:opacity-75'" class="h-full w-full object-cover object-center" />
+      <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md">
+        <img :src="flash.img || 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg'" :alt="flash.name" :class="flash.is_booked ? '' : onArtistPage ? 'group-hover:opacity-75' : ''" class="h-[300px] w-full object-cover object-center" />
       </div>
       <div v-if="!onArtistPage" @click="openEditDialog(flash)" class="absolute top-0 left-0 rounded-full z-10 p-2 bg-primary m-2 cursor-pointer">
         <svg-icon :path="mdiPencil" type="mdi" class="text-white" size="20"/>
       </div>
-      <div v-if="!onArtistPage" @click="openAdminDialog(flash)" class="absolute top-0 z-10 right-0 rounded-full p-2 bg-red-500 m-2 cursor-pointer">
+      <div v-if="!onArtistPage" @click="openDeleteDialog(flash)" class="absolute top-0 z-10 right-0 rounded-full p-2 bg-red-500 m-2 cursor-pointer">
         <svg-icon :path="mdiTrashCanOutline" type="mdi" class="text-white" size="20"/>
       </div>
       <div class="mt-6">
         <h3 class="mt-1 font-semibold text-gray-900">
           <a :href="flash.href">
             <span class="absolute inset-0" />
-            {{ flash.name }}x
+            {{ flash.name }}
           </a>
         </h3>
-        <p class="mt-1 text-gray-900">{{ flash.price }}</p>
+        <p class="mt-1 text-gray-900">{{ flash.price }} €</p>
+      </div>
+      <div v-if="flash.is_booked && !onArtistPage" class="absolute bottom-20 left-1/2 -translate-x-1/2">
+        <p class="text-green-500 font-bold text-xl">Réservé</p>
       </div>
     </div>
     <Dialog ref="DialogConfirmDelete" v-if="!onArtistPage">
@@ -64,7 +67,7 @@ const flashToDelete = ref(null);
 const showEditDialog = ref(false);
 const selectedFlash = ref(null);
 
-const openAdminDialog = (item) => {
+const openDeleteDialog = (item) => {
   flashToDelete.value = item;
   DialogConfirmDelete.value.open();
 };

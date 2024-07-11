@@ -3,7 +3,7 @@
     <div class="col-span-3 bg-gray-50">
       <ArtistsCard class="p-4" :artist="artist" artist-page />
     </div>
-    <div class="col-span-9 h-screen grid grid-cols-12">
+    <div class="col-span-9 h-screen grid grid-cols-12 gap-4">
       <FlashCard @click="item.is_booked ? '' : openDialog(item)" class="col-span-3" v-for="item in flashs" :flash="item" onArtistPage />
     </div>
     <Dialog ref="DialogContactArtist">

@@ -31,7 +31,7 @@
       </div>
       <p v-if="!props.artistPage" :class="props.artistPage ? '' : 'mx-4'">{{ artist.description }}</p>
       <div v-if="props.artistPage" class="mt-4 w-full h-[1px] bg-gray-500"></div>
-      <p>{{artist.description}}</p>
+      <p v-if="props.artistPage">{{artist.description}}</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <button
           v-for="style in artist.styles"
