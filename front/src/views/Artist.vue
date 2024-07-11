@@ -1,6 +1,6 @@
 <template>
   <div class="w-9/12 mx-auto grid grid-cols-12 gap-6">
-    <div class="col-span-3 bg-gray-50">
+    <div class="col-span-3 bg-gray-50 shadow-xl rounded-lg">
       <ArtistsCard class="p-4" :artist="artist" artist-page />
     </div>
     <div class="col-span-9 h-screen grid grid-cols-12 gap-4">
