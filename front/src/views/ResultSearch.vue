@@ -1,7 +1,7 @@
 <template>
   <main class="bg-gray-100">
     <div
-        class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center justify-center"
+      class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center justify-center"
     >
       <h1 class="text-3xl text-white">Trouvez un tatoueur près de chez vous</h1>
     </div>
@@ -12,14 +12,19 @@
           <div>
             <h2 class="text-2xl font-semibold">Tatoueurs en France</h2>
             <p class="text-lg">
-              <span class="text-orange-500">{{ allArtists.length }}</span> tatoueurs trouvés
+              <span class="text-orange-500">{{ allArtists.length }}</span>
+              tatoueurs trouvés
             </p>
           </div>
           <div class="mt-2 mb-5">
             <hr class="h-0 bg-slate-400 rounded-lg" />
 
             <div class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4">
-              <ArtistCard v-for="artist in allArtists" :key="artist._id" :artist="artist" />
+              <ArtistCard
+                v-for="artist in allArtists"
+                :key="artist._id"
+                :artist="artist"
+              />
             </div>
           </div>
         </div>
@@ -30,9 +35,9 @@
           <hr class="h-0 bg-slate-400 rounded-lg mt-2" />
           <article class="flex flex-wrap gap-1 text-sm pt-5">
             <button
-                v-for="style in styles"
-                :key="style.id"
-                class="px-4 py-2 border rounded-full text-gray-700 bg-white"
+              v-for="style in styles"
+              :key="style.id"
+              class="px-4 py-2 border rounded-full text-gray-700 bg-white capitalize"
             >
               {{ style.name }}
             </button>
@@ -45,19 +50,23 @@
 
 <script setup>
 import { ref } from "vue";
-import ArtistCard from '../components/ArtistsCard.vue';
+import ArtistCard from "../components/ArtistsCard.vue";
+import { useRoute } from "vue-router";
 
 const styles = ref([]);
 const allArtists = ref([]);
 
-fetch("http://localhost:3000/api/styles")
-    .then((res) => res.json())
-    .then((data) => (styles.value = data));
+const route = useRoute();
 
-fetch("http://localhost:3000/api/artists")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Artists data:", data);
-      allArtists.value = data;
-    });
+console.log("Route:", route.query);
+
+fetch("http://localhost:3000/api/styles")
+  .then((res) => res.json())
+  .then((data) => (styles.value = data));
+
+fetch("http://localhost:3000/api/artists?populate=true")
+  .then((res) => res.json())
+  .then((data) => {
+    allArtists.value = data;
+  });
 </script>

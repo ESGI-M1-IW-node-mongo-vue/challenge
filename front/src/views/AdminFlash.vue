@@ -5,6 +5,9 @@
       <div class="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8">
         <div class="flex items-center justify-between px-4 sm:px-6 lg:px-0">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900">Liste des Flashs</h2>
+          <button @click="openCreateDialog" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500">
+            Ajouter un Flash
+          </button>
         </div>
 
         <div class="relative mt-8">
@@ -22,11 +25,13 @@
 <script setup>
 import DashboardMenu from "@/components/Dashboard-menu.vue";
 import FlashCard from "@/components/FlashCard.vue";
+import CreateFlash from "@/components/CreateFlash.vue";
 import EditFlash from "@/components/EditFlash.vue";
 import { ref, onMounted } from "vue";
 
 const flashs = ref([]);
 const showEditDialog = ref(false);
+const showCreateDialog = ref(false);
 const selectedFlash = ref(null);
 
 const fetchFlashs = () => {
@@ -60,6 +65,26 @@ const updateFlash = async (updatedFlash) => {
   });
   fetchFlashs();
   closeEditDialog();
+};
+
+const openCreateDialog = () => {
+  showCreateDialog.value = true;
+};
+
+const closeCreateDialog = () => {
+  showCreateDialog.value = false;
+};
+
+const createFlash = async (newFlash) => {
+  await fetch("http://localhost:3000/api/flashs", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newFlash)
+  });
+  fetchFlashs();
+  closeCreateDialog();
 };
 
 onMounted(fetchFlashs);
