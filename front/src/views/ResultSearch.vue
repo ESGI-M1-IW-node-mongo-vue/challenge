@@ -37,18 +37,32 @@
               {{ isFlash ? "Flashs" : "Tatoueurs" }} en France
             </h2>
             <p class="text-lg">
-              <span class="text-orange-500">{{ allArtists.length }}</span>
+              <span class="text-orange-500">{{ allObject.length }}</span>
               {{ isFlash ? "flashs" : "tatoueurs" }} trouvés
             </p>
           </div>
           <div class="mt-2 mb-5">
             <hr class="h-0 bg-slate-400 rounded-lg" />
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4"
+              v-if="!isFlash"
+            >
               <ArtistCard
-                v-for="artist in allArtists"
+                v-for="artist in allObject"
                 :key="artist._id"
                 :artist="artist"
+              />
+            </div>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-4 mt-6 gap-4"
+              v-if="isFlash"
+            >
+              <FlashCard
+                v-for="flash in allObject"
+                :key="flash._id"
+                :flash="flash"
+                :disableControls="true"
               />
             </div>
           </div>
@@ -81,6 +95,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import ArtistCard from "../components/ArtistsCard.vue";
+import FlashCard from "../components/FlashCard.vue";
 import { useRoute, useRouter } from "vue-router";
 import SearchBar from "@/components/SearchBar.vue";
 import { Switch } from "@headlessui/vue";
@@ -88,7 +103,7 @@ import { Switch } from "@headlessui/vue";
 const isFlash = ref(false);
 
 const styles = ref([]);
-const allArtists = ref([]);
+const allObject = ref([]);
 
 const route = useRoute();
 const router = useRouter();
@@ -138,7 +153,7 @@ watch(route, () => {
     `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
   )
     .then((res) => res.json())
-    .then((data) => (allArtists.value = data));
+    .then((data) => (allObject.value = data));
 });
 
 fetch("http://localhost:3000/api/styles")
@@ -147,5 +162,5 @@ fetch("http://localhost:3000/api/styles")
 
 fetch("http://localhost:3000/api/artists")
   .then((res) => res.json())
-  .then((data) => (allArtists.value = data));
+  .then((data) => (allObject.value = data));
 </script>
