@@ -160,7 +160,10 @@ fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
   .then((data) => (styles.value = data));
 
-fetch("http://localhost:3000/api/artists")
+fetch(
+  "http://localhost:3000/api/artists?" +
+    new URLSearchParams({ ...route.query, populate: "style" }).toString(),
+)
   .then((res) => res.json())
   .then((data) => (allObject.value = data));
 </script>
