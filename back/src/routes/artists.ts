@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { Artist } from "../models/artists";
 import { isValidObjectId } from "mongoose";
 import { decode } from "hono/jwt";
+import { Flash } from "../models/flashs";
 
 const api = new Hono().basePath("/artists");
 
@@ -10,6 +11,7 @@ api.get("/", async (c) => {
   const populate = [];
 
   const styleQuery = c.req.query("style");
+  const populateQuery = c.req.query("populate");
   let googleId = c.req.query("googleId") ?? "";
   const bearer = c.req.header("Authorization");
 
@@ -27,7 +29,7 @@ api.get("/", async (c) => {
   if (googleId) {
     filter["google_id"] = googleId;
   }
-
+  console.log(filter, populate);
   return c.json(await Artist.find(filter).populate([...populate]));
 });
 
@@ -52,6 +54,31 @@ api.post("/", async (c) => {
   }
 });
 
+api.post("/:id/flashs", async (c) => {
+  const artistId = c.req.param("id");
+  const body = await c.req.json();
+
+  const newFlash = new Flash(body);
+  const saveFlash = await newFlash.save();
+  const { _id } = saveFlash;
+
+  const updateQuery = {
+    $addToSet: {
+      flashs: _id,
+    },
+  };
+  const tryToUpdate = await Artist.findOneAndUpdate(
+    {
+      _id: artistId,
+    },
+    updateQuery,
+    {
+      new: true,
+    },
+  );
+  return c.json(tryToUpdate);
+});
+
 api.put("/:id", async (c) => {
   const _id = c.req.param("id");
   const body = await c.req.json();
@@ -64,7 +91,6 @@ api.put("/:id", async (c) => {
   const tryToUpdate = await Artist.findOneAndUpdate(q, updateQuery, {
     new: true,
   });
-  return c.json(tryToUpdate, 200);
 });
 
 api.patch("/:id", async (c) => {
