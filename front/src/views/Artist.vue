@@ -1,9 +1,9 @@
 <template>
-  <div class="container mx-auto grid grid-cols-12">
-    <div class="col-span-2">
-      <ArtistsCard :artist="artist" artist-page />
+  <div class="w-9/12 mx-auto grid grid-cols-12 gap-6">
+    <div class="col-span-3 bg-gray-50">
+      <ArtistsCard class="p-4" :artist="artist" artist-page />
     </div>
-    <div class="col-span-10">
+    <div class="col-span-9 h-screen bg-primary">
 
     </div>
   </div>

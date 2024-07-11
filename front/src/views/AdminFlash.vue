@@ -33,16 +33,18 @@ const flashs = ref([]);
 const showEditDialog = ref(false);
 const showCreateDialog = ref(false);
 const selectedFlash = ref(null);
+const userFlashs = ref(null)
 
-const fetchFlashs = () => {
-  fetch("http://localhost:3000/api/flashs")
-      .then((res) => res.json())
-      .then((data) => {
-        flashs.value = data;
-      })
-      .catch((error) => {
-        console.error("Error fetching flashs:", error);
-      });
+const fetchFlashs = async () => {
+  await fetch("http://localhost:3000/api/artists",{
+    method:"get",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    }}).then(async (res) => {
+      const resultJson = await res.json()
+      userFlashs.value = resultJson
+    })
+
 };
 
 const openEditDialog = (flash) => {
