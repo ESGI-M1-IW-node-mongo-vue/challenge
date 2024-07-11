@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ArtistCard from "../components/ArtistsCard.vue";
 import { useRoute } from "vue-router";
 import SearchBar from "@/components/SearchBar.vue";
@@ -60,19 +60,21 @@ const allArtists = ref([]);
 
 const route = useRoute();
 
-const location = route.query.location;
-const style = route.query.style;
+watch(route, () => {
+  const location = route.query.location;
+  const style = route.query.style;
 
-const searchParams = new URLSearchParams();
+  const searchParams = new URLSearchParams();
 
-if (location) searchParams.append("location", location);
-if (style) searchParams.append("style", style);
+  if (location) searchParams.append("location", location);
+  if (style) searchParams.append("style", style);
 
-fetch(
-  `http://localhost:3000/api/flashs${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
-)
-  .then((res) => res.json())
-  .then((data) => (console.log(data), (allArtists.value = data)));
+  fetch(
+    `http://localhost:3000/api/flashs${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
+  )
+    .then((res) => res.json())
+    .then((data) => (console.log(data), (allArtists.value = data)));
+});
 
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
