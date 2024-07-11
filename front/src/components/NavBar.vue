@@ -98,7 +98,7 @@ import { Dialog, DialogPanel } from "@headlessui/vue";
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Recherche", href: "/result" },
-  { name: "Newsletters", href: "#news" },
+  { name: "Newsletters", href: "/#news" },
 ];
 
 const mobileMenuOpen = ref(false);
