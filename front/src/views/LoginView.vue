@@ -32,5 +32,7 @@ const callback: CallbackTypes.CredentialCallback = async (response) => {
 </script>
 
 <template>
-  <GoogleLogin :callback="callback" prompt auto-login />
+  <div class="h-72 flex justify-center items-center">
+    <GoogleLogin :callback="callback" prompt auto-login />
+  </div>
 </template>
