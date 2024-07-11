@@ -6,41 +6,29 @@ import { decode } from "hono/jwt";
 const api = new Hono().basePath("/artists");
 
 api.get("/", async (c) => {
-  const styleQuery = c.req.query("style");
-  const googleId = c.req.query("googleId");
+  const filter = {} as any;
+  const populate = [];
 
-  if (!styleQuery && !googleId) {
-    return c.json(await Artist.find().populate("styles").populate("flashs"));
+  const styleQuery = c.req.query("style");
+  let googleId = c.req.query("googleId") ?? "";
+  const bearer = c.req.header("Authorization");
+
+  if (bearer) {
+    const token = bearer.split(" ")[1];
+    googleId = decode(token).payload.sub as unknown as string;
+    populate.push({ path: "flashs" });
   }
 
   if (styleQuery) {
-    const artists = await Artist.find({
-      styles: { $in: styleQuery + "" },
-    }).populate("styles");
-    return c.json(artists);
+    filter["styles"] = { $in: styleQuery + "" };
+    populate.push({ path: "styles" });
   }
 
   if (googleId) {
-    const oneArt = await Artist.find({
-      google_id: googleId,
-    });
-    return c.json(oneArt);
+    filter["google_id"] = googleId;
   }
 
-  const bearer = c.req.header("Authorization");
-  if (bearer) {
-    const token = bearer.split(" ")[1];
-    const { payload: decoded }: any = decode(token);
-    const artist = await Artist.findOne({ google_id: decoded.sub });
-
-    return c.json(artist)
-  }
-
-  if (!styleQuery && !googleId) {
-    return c.json(await Artist.find());
-  }
-
-  return c.json({ msg: "Unauthorized" }, 401);
+  return c.json(await Artist.find(filter).populate([...populate]));
 });
 
 api.get("/:id", async (c) => {
