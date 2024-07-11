@@ -1,9 +1,12 @@
 <template>
   <main class="bg-gray-100">
     <div
-      class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center justify-center"
+      class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center flex-col gap-5 justify-center"
     >
-      <h1 class="text-3xl text-white">Trouvez un tatoueur près de chez vous</h1>
+      <h1 class="text-3xl text-white">
+        Trouvez un flash et un tatoueur près de chez vous
+      </h1>
+      <SearchBar />
     </div>
 
     <div class="grid grid-cols-6 mx-40 mt-10 gap-10">
@@ -52,6 +55,7 @@
 import { ref } from "vue";
 import ArtistCard from "../components/ArtistsCard.vue";
 import { useRoute } from "vue-router";
+import SearchBar from "@/components/SearchBar.vue";
 
 const styles = ref([]);
 const allArtists = ref([]);
