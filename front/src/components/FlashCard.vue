@@ -4,8 +4,12 @@
       <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md">
         <img :src="flash.img || 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg'" :alt="flash.name" :class="flash.is_booked ? '' : onArtistPage ? 'group-hover:opacity-75' : ''" class="h-[300px] w-full object-cover object-center" />
       </div>
-      <div v-if="!onArtistPage" @click="openEditDialog(flash)" class="absolute top-0 left-0 rounded-full z-10 p-2 bg-primary m-2 cursor-pointer">
-        <svg-icon :path="mdiPencil" type="mdi" class="text-white" size="20"/>
+      <div
+        v-if="!onArtistPage && !disableControls"
+        @click="openEditDialog(flash)"
+        class="absolute top-0 left-0 rounded-full z-10 p-2 bg-primary m-2 cursor-pointer"
+      >
+        <svg-icon :path="mdiPencil" type="mdi" class="text-white" size="20" />
       </div>
       <div v-if="!onArtistPage" @click="openDeleteDialog(flash)" class="absolute top-0 z-10 right-0 rounded-full p-2 bg-red-500 m-2 cursor-pointer">
         <svg-icon :path="mdiTrashCanOutline" type="mdi" class="text-white" size="20"/>
@@ -23,7 +27,7 @@
         <p class="text-green-500 font-bold text-xl">Réservé</p>
       </div>
     </div>
-    <Dialog ref="DialogConfirmDelete" v-if="!onArtistPage">
+    <Dialog ref="DialogConfirmDelete" v-if="!onArtistPage && !disableControls">
       <template #title>
         <p class="text-red-500">Supprimer le flash</p>
       </template>
@@ -32,19 +36,29 @@
           <p>Voulez-vous supprimer ce flash ?</p>
         </div>
         <div class="flex justify-end">
-          <div @click="deleteFlash" class="p-2 bg-red-500 rounded-md text-white cursor-pointer hover:bg-red-800">Confirmer</div>
+          <div
+            @click="deleteFlash"
+            class="p-2 bg-red-500 rounded-md text-white cursor-pointer hover:bg-red-800"
+          >
+            Confirmer
+          </div>
         </div>
       </template>
     </Dialog>
 
-    <EditFlash :show="showEditDialog" :flash="selectedFlash" @confirm="updateFlash" @cancel="closeEditDialog" />
+    <EditFlash
+      :show="showEditDialog"
+      :flash="selectedFlash"
+      @confirm="updateFlash"
+      @cancel="closeEditDialog"
+    />
   </li>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiPencil, mdiTrashCanOutline } from '@mdi/js';
+import { defineProps, ref } from "vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiPencil, mdiTrashCanOutline } from "@mdi/js";
 import Dialog from "@/components/Dialog.vue";
 import EditFlash from "@/components/EditFlash.vue";
 
@@ -53,14 +67,19 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  disableControls: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   onArtistPage: {
     type: Boolean,
     required: false,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const emits = defineEmits(['refresh']);
+const emits = defineEmits(["refresh"]);
 const DialogConfirmDelete = ref(null);
 const flashToDelete = ref(null);
 
@@ -77,7 +96,7 @@ const deleteFlash = async () => {
     await fetch(`http://localhost:3000/api/flashs/${flashToDelete.value._id}`, {
       method: "DELETE",
     });
-    emits('refresh');
+    emits("refresh");
     DialogConfirmDelete.value.close();
   }
 };
@@ -96,11 +115,11 @@ const updateFlash = async (updatedFlash) => {
   await fetch(`http://localhost:3000/api/flashs/${selectedFlash.value._id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(updatedFlash)
+    body: JSON.stringify(updatedFlash),
   });
-  emits('refresh');
+  emits("refresh");
   closeEditDialog();
 };
 </script>

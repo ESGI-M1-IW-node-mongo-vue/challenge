@@ -12,8 +12,8 @@
         <Switch
           v-model="isFlash"
           :class="[
-            isFlash ? 'bg-indigo-600' : 'bg-gray-200',
-            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+            isFlash ? 'bg-orange-500' : 'bg-gray-200',
+            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
           ]"
         >
           <span class="sr-only">Toggle flash</span>
@@ -37,18 +37,32 @@
               {{ isFlash ? "Flashs" : "Tatoueurs" }} en France
             </h2>
             <p class="text-lg">
-              <span class="text-orange-500">{{ allArtists.length }}</span>
+              <span class="text-orange-500">{{ allObject.length }}</span>
               {{ isFlash ? "flashs" : "tatoueurs" }} trouvés
             </p>
           </div>
           <div class="mt-2 mb-5">
             <hr class="h-0 bg-slate-400 rounded-lg" />
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-4"
+              v-if="!isFlash"
+            >
               <ArtistCard
-                v-for="artist in allArtists"
+                v-for="artist in allObject"
                 :key="artist._id"
                 :artist="artist"
+              />
+            </div>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-4 mt-6 gap-4"
+              v-if="isFlash"
+            >
+              <FlashCard
+                v-for="flash in allObject"
+                :key="flash._id"
+                :flash="flash"
+                :disableControls="true"
               />
             </div>
           </div>
@@ -63,7 +77,11 @@
               v-for="style in styles"
               :key="style.id"
               @click="filterStyle(style)"
-              class="px-4 py-2 border rounded-full text-gray-700 bg-white capitalize"
+              class="px-4 py-2 border rounded-full capitalize"
+              :class="{
+                'bg-orange-500 text-white': style._id === route.query.style,
+                'bg-gray-200 text-gray-700': style._id !== route.query.style,
+              }"
             >
               {{ style.name }}
             </button>
@@ -77,6 +95,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import ArtistCard from "../components/ArtistsCard.vue";
+import FlashCard from "../components/FlashCard.vue";
 import { useRoute, useRouter } from "vue-router";
 import SearchBar from "@/components/SearchBar.vue";
 import { Switch } from "@headlessui/vue";
@@ -84,12 +103,21 @@ import { Switch } from "@headlessui/vue";
 const isFlash = ref(false);
 
 const styles = ref([]);
-const allArtists = ref([]);
+const allObject = ref([]);
 
 const route = useRoute();
 const router = useRouter();
 
 const filterStyle = (clickedStyle) => {
+  if (clickedStyle._id === route.query.style) {
+    router.push({
+      query: {
+        ...route.query,
+        style: undefined,
+      },
+    });
+    return;
+  }
   router.push({
     query: {
       ...route.query,
@@ -122,13 +150,20 @@ watch(route, () => {
     : "http://localhost:3000/api/artists";
 
   fetch(
-    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`,
+    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
   )
     .then((res) => res.json())
-    .then((data) => (console.log(data), (allArtists.value = data)));
+    .then((data) => (allObject.value = data));
 });
 
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
   .then((data) => (styles.value = data));
+
+fetch(
+  "http://localhost:3000/api/artists?" +
+    new URLSearchParams({ ...route.query, populate: "style" }).toString(),
+)
+  .then((res) => res.json())
+  .then((data) => (allObject.value = data));
 </script>

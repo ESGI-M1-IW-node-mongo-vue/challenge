@@ -19,7 +19,7 @@
       <RouterLink
         v-for="style in styles"
         :key="style.name"
-        :to="`/result?style=${style.name}`"
+        :to="`/result?style=${style._id}`"
         class="relative rounded-lg shadow-lg overflow-hidden h-52 w-full capitalize"
       >
         <img
