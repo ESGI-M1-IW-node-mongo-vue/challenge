@@ -106,7 +106,7 @@ const styles = ref([]);
 const selectedStyle = ref({});
 const location = ref("");
 const searchUrl = computed(
-  () => `/results?style=${selectedStyle.value}&location=${location.value}`
+  () => `/result?style=${selectedStyle.value}&location=${location.value}`,
 );
 
 fetch("http://localhost:3000/api/styles")
