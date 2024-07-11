@@ -54,9 +54,14 @@ api.post("/", async (c) => {
   }
 });
 
-api.post("/:id/flashs", async (c) => {
-  const artistId = c.req.param("id");
+api.post("/flashs", async (c) => {
+  const bearer = c.req.header("Authorization");
   const body = await c.req.json();
+
+  if (!bearer) return c.json({ msg: "Unauthorized" }, 401);
+
+  const token = bearer.split(" ")[1];
+  const artistId = decode(token).payload.sub as unknown as string;
 
   const newFlash = new Flash(body);
   const saveFlash = await newFlash.save();
@@ -69,7 +74,7 @@ api.post("/:id/flashs", async (c) => {
   };
   const tryToUpdate = await Artist.findOneAndUpdate(
     {
-      _id: artistId,
+      google_id: artistId,
     },
     updateQuery,
     {
