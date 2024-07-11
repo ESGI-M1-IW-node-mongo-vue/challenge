@@ -16,7 +16,7 @@ export interface IArtist {
 }
 
 export const artistSchema = new Schema<IArtist>({
-  name: { type: String, required: true, lowercase: true, trim: true },
+  name: { type: String, required: true, trim: true },
   email: { type: String, required: true, lowercase: true, trim: true },
   tel: { type: String, lowercase: true, trim: true },
   profile_img: { type: String, required: true },

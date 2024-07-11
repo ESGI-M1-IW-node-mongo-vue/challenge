@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="flex flex-col p-10 gap-y-6 bg-gray-100 h-screen">
+      <div v-for="item in back" @click="goTo(item.routeName)"  class="flex gap-2 cursor-pointer">
+        <svg-icon type="mdi" :path="mdiKeyboardBackspace">
+        </svg-icon>
+        <p>Retour</p>
+      </div>
       <div class="flex items-center gap-x-6">
         <img src="https://picsum.photos/200" alt="logoTatoueurs" class="w-20 h-20">
         <p class="text-lg font-bold">Nom du tatoueur</p>
@@ -16,39 +21,43 @@
 </template>
 <script setup>
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiBookOutline, mdiAccountBoxOutline, mdiDrawPen } from '@mdi/js';
-import {ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { mdiBookOutline, mdiAccountBoxOutline, mdiDrawPen, mdiKeyboardBackspace } from '@mdi/js';
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
 const menu = ref([
-      {
-        text: "Rendez-vous",
-        routeName:"meeting",
-        icon: mdiBookOutline,
-        selected:false,
-      },
-      {
-        text:"Profil",
-        routeName:"profile",
-        icon: mdiAccountBoxOutline,
-        selected:false,
-      },
-      {
-        text:"Flash",
-        routeName:"flash",
-        icon: mdiDrawPen,
-        selected:false,
-      }
-    ]
-)
+  {
+    text: "Rendez-vous",
+    routeName: "meeting",
+    icon: mdiBookOutline,
+    selected: false,
+  },
+  {
+    text: "Profil",
+    routeName: "profile",
+    icon: mdiAccountBoxOutline,
+    selected: false,
+  },
+  {
+    text: "Flash",
+    routeName: "flash",
+    icon: mdiDrawPen,
+    selected: false,
+  }
+]);
 
-menu.value.find(x => x.routeName == route.name).selected = true
+const back = ref([
+  {
+    routeName: "home",
+  }
+]);
 
-const goTo = function (routeName){
-  router.push({name: routeName})
+menu.value.find(x => x.routeName === route.name).selected = true;
+
+const goTo = function (routeName) {
+  router.push({ name: routeName });
 }
-
 </script>

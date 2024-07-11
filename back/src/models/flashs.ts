@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IStyle } from "./styles";
+import {IArtist} from "./artists";
 
 export interface IFlash {
   name: string;
@@ -16,7 +17,7 @@ const flashSchema = new Schema<IFlash>({
   img: { type: String, required: true },
   is_booked: { type: Boolean, required: true },
   price: { type: Number, required: true },
-  style: { type: Schema.Types.ObjectId, ref: "styles" },
+  style: { type: Schema.Types.ObjectId, ref: "styles" }
 });
 
 export const Flash = model<IFlash>("flashs", flashSchema);
