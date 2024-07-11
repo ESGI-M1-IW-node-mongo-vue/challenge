@@ -8,15 +8,15 @@ import {Artist} from "../models/artists";
 const api = new Hono().basePath("/flashs");
 
 api.get("/", async (c) => {
-  const artistId = c.req.query("artistId")
-  if(!artistId){
-    return c.json(await Flash.find());
+  const filter = {} as any;
+
+  const { style } = c.req.query();
+
+  if (style) {
+    filter["style"] = style;
   }
 
-  const FlashsByArtist = await Flash.find({
-    artist: artistId
-  })
-  return c.json(FlashsByArtist)
+  return c.json(await Flash.find(filter));
 });
 
 api.get("/:id", async (c) => {
