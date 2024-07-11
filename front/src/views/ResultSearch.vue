@@ -3,18 +3,42 @@
     <div
       class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center flex-col gap-5 justify-center"
     >
-      <h1 class="text-3xl text-white">Trouvez un flash près de chez vous</h1>
+      <h1 class="text-3xl text-white">
+        Trouvez un {{ isFlash ? "flash" : "tatoueur" }} près de chez vous
+      </h1>
       <SearchBar />
+      <div class="text-white text-xl text-shadow flex gap-2 items-center mb-3">
+        <p>Tatoueurs</p>
+        <Switch
+          v-model="isFlash"
+          :class="[
+            isFlash ? 'bg-indigo-600' : 'bg-gray-200',
+            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+          ]"
+        >
+          <span class="sr-only">Toggle flash</span>
+          <span
+            aria-hidden="true"
+            :class="[
+              isFlash ? 'translate-x-5' : 'translate-x-0',
+              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+            ]"
+          />
+        </Switch>
+        <p>Flashs</p>
+      </div>
     </div>
 
     <div class="grid grid-cols-6 mx-40 mt-10 gap-10">
       <section class="col-span-5">
         <div>
           <div>
-            <h2 class="text-2xl font-semibold">Tatoueurs en France</h2>
+            <h2 class="text-2xl font-semibold">
+              {{ isFlash ? "Flashs" : "Tatoueurs" }} en France
+            </h2>
             <p class="text-lg">
               <span class="text-orange-500">{{ allArtists.length }}</span>
-              tatoueurs trouvés
+              {{ isFlash ? "flashs" : "tatoueurs" }} trouvés
             </p>
           </div>
           <div class="mt-2 mb-5">
@@ -38,6 +62,7 @@
             <button
               v-for="style in styles"
               :key="style.id"
+              @click="filterStyle(style)"
               class="px-4 py-2 border rounded-full text-gray-700 bg-white capitalize"
             >
               {{ style.name }}
@@ -52,26 +77,52 @@
 <script setup>
 import { ref, watch } from "vue";
 import ArtistCard from "../components/ArtistsCard.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import SearchBar from "@/components/SearchBar.vue";
+import { Switch } from "@headlessui/vue";
+
+const isFlash = ref(false);
 
 const styles = ref([]);
 const allArtists = ref([]);
 
 const route = useRoute();
+const router = useRouter();
+
+const filterStyle = (clickedStyle) => {
+  router.push({
+    query: {
+      ...route.query,
+      style: clickedStyle._id,
+    },
+  });
+};
+
+watch(isFlash, () => {
+  router.push({
+    query: {
+      ...route.query,
+      flashOrArtist: isFlash.value ? "flash" : "artist",
+    },
+  });
+});
 
 watch(route, () => {
   const location = route.query.location;
   const style = route.query.style;
-  const flashOrArtist = route.query.flashOrArtist ?? "artist";
 
   const searchParams = new URLSearchParams();
 
   if (location) searchParams.append("location", location);
   if (style) searchParams.append("style", style);
+  searchParams.append("populate", "style");
+
+  const fetchUrl = isFlash.value
+    ? "http://localhost:3000/api/flashs"
+    : "http://localhost:3000/api/artists";
 
   fetch(
-    `http://localhost:3000/api/flashs${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
+    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`,
   )
     .then((res) => res.json())
     .then((data) => (console.log(data), (allArtists.value = data)));
@@ -80,10 +131,4 @@ watch(route, () => {
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
   .then((data) => (styles.value = data));
-
-fetch("http://localhost:3000/api/artists?populate=true")
-  .then((res) => res.json())
-  .then((data) => {
-    allArtists.value = data;
-  });
 </script>
