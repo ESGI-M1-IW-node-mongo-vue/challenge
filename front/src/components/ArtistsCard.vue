@@ -31,17 +31,7 @@
       </div>
       <p v-if="!props.artistPage" :class="props.artistPage ? '' : 'mx-4'">{{ artist.description }}</p>
       <div v-if="props.artistPage" class="mt-4 w-full h-[1px] bg-gray-500"></div>
-      <div v-if="props.artistPage" class="flex flex-col gap-y-2 items-center justify-center">
-        <p class="font-bold text-lg">Contact</p>
-        <div class="flex items-center gap-x-8">
-          <div class="flex items-center justify-center px-4 py-2 cursor-pointer bg-black text-white rounded-full">
-            Téléphone
-          </div>
-          <div @click="openDialog" class="flex items-center justify-center px-4 py-2 cursor-pointer bg-primary text-white rounded-full">
-            Réserver
-          </div>
-        </div>
-      </div>
+      <p>{{artist.description}}</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <button
           v-for="style in artist.styles"
@@ -52,23 +42,6 @@
         </button>
       </div>
     </div>
-    <Dialog ref="DialogContactArtist">
-      <template #title>
-        <div class="flex justify-between">
-          <div></div>
-          <div @click="closeDialog()" class="cursor-pointer z-50">
-            <svg-icon
-                type="mdi"
-                :path="mdiClose"
-                class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-xl"
-            ></svg-icon>
-          </div>
-        </div>
-      </template>
-      <template #content>
-        <Reservation />
-      </template>
-    </Dialog>
   </div>
 </template>
 
@@ -90,14 +63,4 @@ const props = defineProps({
     default: false,
   },
 });
-
-const DialogContactArtist = ref(null)
-
-const openDialog = function () {
-  DialogContactArtist.value.open();
-};
-
-const closeDialog = function () {
-  DialogContactArtist.value.close();
-};
 </script>

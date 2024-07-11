@@ -35,16 +35,17 @@
         Reservation
       </h2>
       <p class="mt-2 text-lg leading-8 text-gray-600">
-        Inscription pour le flash : {NOM DU FLASH}
+        Inscription pour le flash : {{props.infoFlash.name}}
       </p>
     </div>
-    <form action="#" method="POST" class="mx-auto mt-3 max-w-xl sm:mt-5">
+    <div class="mx-auto mt-3 max-w-xl sm:mt-5">
+      <p v-if="error" class="p-2 bg-red-500 text-white mb-4">Veuillez remplir tous les champs </p>
       <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label
               for="first-name"
               class="block text-sm font-semibold leading-6 text-gray-900"
-          >Crénaux</label
+          >Créneaux</label
           >
           <div class="flex flex-col gap-y-2">
             <VueDatePicker v-model="date" :format="dateFormatted" auto-apply :clearable="false" :enable-time-picker="false" :disabled-week-days="[6, 0]"/>
@@ -62,9 +63,7 @@
           <div class="mt-2.5">
             <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autocomplete="given-name"
+                v-model="form.name_client"
                 class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -78,9 +77,7 @@
           <div class="mt-2.5">
             <input
                 type="text"
-                name="last-name"
-                id="last-name"
-                autocomplete="family-name"
+                v-model="form.lastname_client"
                 class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -94,9 +91,7 @@
           <div class="mt-2.5">
             <input
                 type="email"
-                name="email"
-                id="email"
-                autocomplete="email"
+                v-model="form.email_client"
                 class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -108,27 +103,9 @@
           >Téléphone</label
           >
           <div class="relative mt-2.5">
-            <div class="absolute inset-y-0 left-0 flex items-center">
-              <label for="country" class="sr-only">Country</label>
-              <select
-                  id="country"
-                  name="country"
-                  class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-3 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-              >
-                <option>EU</option>
-                <option>US</option>
-                <option>CA</option>
-              </select>
-              <ChevronDownIcon
-                  class="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
-                  aria-hidden="true"
-              />
-            </div>
             <input
                 type="tel"
-                name="phone-number"
-                id="phone-number"
-                autocomplete="tel"
+                v-model="form.phone_client"
                 class="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -136,13 +113,13 @@
       </div>
       <div class="mt-10">
         <button
-            type="submit"
+            @click="book()"
             class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Reserver
         </button>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -150,13 +127,30 @@
 import {ref, watch} from "vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {format, getHours} from "date-fns";
+import {format, getHours, setHours, setMinutes,formatISO, addHours} from "date-fns";
 import {fr} from "date-fns/locale/fr";
+import {useRoute} from "vue-router";
+
+const props = defineProps({
+  infoFlash:{
+    type: Object,
+    required: true
+  }
+})
 
 const DialogConfirmDelete = ref(null);
 const date = ref(null)
 const dateIsSet = ref(false)
 const modelHours = ref(null)
+const route = useRoute()
+const form = ref({
+  name_client: null,
+  lastname_client: null,
+  email_client: null,
+  phone_client: null
+})
+const error = ref(false)
+const emits = defineEmits(['closeDialog'])
 
 const dateFormatted = function (date) {
   return format(date, `eeee dd MMMM u`, {
@@ -166,14 +160,10 @@ const dateFormatted = function (date) {
 
 watch(date,(newVal) => {
   dateIsSet.value = true
-  fetch(`http://localhost:3000/api/reservations?date=${newVal.toISOString()}`, { // TODO C'est pas bon
+  fetch(`http://localhost:3000/api/reservations?date=${newVal.toISOString()}&userId=${route.params.id}`, {
     method: "get",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
   }).then(async (result) => {
     const resultJson = await result.json()
-    console.log(resultJson)
     const tabHours = resultJson.map(x => {
       return getHours(x.start_date)
     })
@@ -188,12 +178,8 @@ watch(date,(newVal) => {
   modelHours.value = null
 })
 
-const openDialog = function () {
-  DialogConfirmDelete.value.open();
-};
-
 const closeDialog = function () {
-  DialogConfirmDelete.value.close();
+  emits('closeDialog')
 };
 
 const hours = ref([
@@ -238,6 +224,41 @@ const hours = ref([
     available: true
   }
 ])
+
+const book = async function () {
+  if(!!form.value.name_client && !!form.value.lastname_client && !!form.value.email_client && !!form.value.phone_client && !!date.value && !!modelHours.value){
+    error.value = false
+    const body = {
+      "start_date": formatISO(setMinutes(setHours(date.value,modelHours.value),0)),
+      "end_date": formatISO(addHours(setMinutes(setHours(date.value,modelHours.value),0),1)),
+      "name_client": form.value.name_client,
+      "lastname_client": form.value.lastname_client,
+      "email_client": form.value.email_client,
+      "phone_client": form.value.phone_client,
+      "flash": props.infoFlash._id,
+      "artist": route.params.id,
+    }
+    await fetch("http://localhost:3000/api/reservations",{
+      method:"post",
+      body: JSON.stringify(body)
+    })
+    const flashBody = {
+      "name": props.infoFlash.name,
+      "description" :props.infoFlash.description,
+      "img" : props.infoFlash.img,
+      "is_booked": true,
+      "price":props.infoFlash.price,
+      "style" : props.infoFlash.style
+    }
+    await fetch(`http://localhost:3000/api/flashs/${props.infoFlash._id}`,{
+      method:"put",
+      body: JSON.stringify(flashBody)
+    })
+    closeDialog()
+  } else {
+    error.value = true
+  }
+}
 
 
 

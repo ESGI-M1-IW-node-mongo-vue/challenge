@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { Flash } from "../models/flashs";
 import { SaveOnS3 } from "../aws-s3";
 import { isValidObjectId } from "mongoose";
+import {Reservation} from "../models/reservations";
+import {Artist} from "../models/artists";
 
 const api = new Hono().basePath("/flashs");
 
@@ -35,6 +37,43 @@ api.delete("/:id", async (c) => {
     return c.json({ msg: "DELETE done" });
   }
   return c.json({ msg: "not found" }, 404);
+});
+
+api.put("/:id", async (c) => {
+  const _id = c.req.param("id");
+  const body = await c.req.json();
+  const q = {
+    _id,
+  };
+  const updateQuery = {
+    ...body,
+  };
+  const tryToUpdate = await Flash.findOneAndUpdate(q, updateQuery, {
+    new: true,
+  });
+  return c.json(tryToUpdate, 200);
+});
+
+api.patch("/:id", async (c) => {
+  console.log('lalalal')
+  const _id = c.req.param("id");
+  const body = await c.req.json();
+  const q = {
+    _id,
+  };
+  const { categories, ...rest } = body;
+
+
+  const updateQuery = {
+    $addToSet: {
+      categories: categories,
+    },
+    $set: { ...rest },
+  };
+  const tryToUpdate = await Flash.findOneAndUpdate(q, updateQuery, {
+    new: true,
+  });
+  return c.json(tryToUpdate, 200);
 });
 
 api.post("/", async (c) => {

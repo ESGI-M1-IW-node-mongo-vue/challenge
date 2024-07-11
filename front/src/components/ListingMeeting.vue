@@ -91,7 +91,14 @@ const cancelMeeting = async function (infosDialogDelete){
   await fetch(`http://localhost:3000/api/reservations/${infosDialogDelete._id}`, {
     method: "delete",
   })
-  emits('refresh',infosDialogDelete.start_date)
+  await fetch(`http://localhost:3000/api/flashs/${infosDialogDelete.flash}`,{
+    method: "PATCH",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "is_booked":false
+    })
+  })
+  emits('refresh',parseISO(infosDialogDelete.start_date))
   DialogConfirmDelete.value.close()
 }
 

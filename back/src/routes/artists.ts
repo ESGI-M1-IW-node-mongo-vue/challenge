@@ -35,7 +35,7 @@ api.get("/:id", async (c) => {
   const _id = c.req.param("id");
 
   if (isValidObjectId(_id)) {
-    const oneArt = await Artist.findOne({ _id });
+    const oneArt = await Artist.findOne({ _id }).populate({ path: "flashs" });
     return c.json(oneArt);
   }
   return c.json({ msg: "ObjectId malformed" }, 400);

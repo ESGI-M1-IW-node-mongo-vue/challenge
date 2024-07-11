@@ -39,6 +39,7 @@ watch(date, (newValue) => {
 const allReservations = ref([]);
 
 const getReservations = function (filterDate: Date) {
+  console.log(filterDate)
   const dateIso = filterDate.toISOString();
   fetch(`http://localhost:3000/api/reservations?date=${dateIso}`, {
     method: "get",

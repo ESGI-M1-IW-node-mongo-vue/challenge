@@ -7,8 +7,21 @@ const api = new Hono().basePath("/reservations");
 
 api.get("/", async (c) => {
   const { date } = c.req.query();
+  const userId = c.req.query("userId")
   if (!date) {
     return c.json(await Reservation.find());
+  }
+
+  if(date && userId){
+    const dateFilter = new Date(date).setHours(0, 0, 0, 0);
+    const reservations = await Reservation.find({
+      start_date: {
+        $gte: dateFilter,
+        $lt: new Date(dateFilter).setDate(new Date(dateFilter).getDate() + 1),
+      },
+      artist : userId,
+    });
+    return c.json(reservations);
   }
 
   //Get token from headers
