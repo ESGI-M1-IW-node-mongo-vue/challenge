@@ -32,9 +32,16 @@ import { mdiMagnify } from "@mdi/js";
 const styles = ref([]);
 const selectedStyle = ref({});
 const location = ref("");
-const searchUrl = computed(
-  () => `/result?style=${selectedStyle.value}&location=${location.value}`
-);
+const searchUrl = computed(() => {
+  const searchParams = new URLSearchParams();
+  if (selectedStyle.value) {
+    searchParams.append("style", selectedStyle.value);
+  }
+  if (location.value) {
+    searchParams.append("location", location.value);
+  }
+  return `/result${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+});
 
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
