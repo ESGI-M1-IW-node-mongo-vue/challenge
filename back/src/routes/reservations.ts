@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { Reservation } from "../models/reservations";
-import { decode } from "hono/jwt";
 import { Artist } from "../models/artists";
 
 const api = new Hono().basePath("/reservations");

@@ -6,7 +6,15 @@ import { isValidObjectId } from "mongoose";
 const api = new Hono().basePath("/flashs");
 
 api.get("/", async (c) => {
-  return c.json(await Flash.find());
+  const artistId = c.req.query("artistId")
+  if(!artistId){
+    return c.json(await Flash.find());
+  }
+
+  const FlashsByArtist = await Flash.find({
+    artist: artistId
+  })
+  return c.json(FlashsByArtist)
 });
 
 api.get("/:id", async (c) => {
