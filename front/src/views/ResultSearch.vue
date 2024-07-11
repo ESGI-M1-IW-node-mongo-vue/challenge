@@ -59,6 +59,7 @@
               v-if="isFlash"
             >
               <FlashCard
+                on-artist-page
                 v-for="flash in allObject"
                 :key="flash._id"
                 :flash="flash"

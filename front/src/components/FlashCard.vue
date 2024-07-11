@@ -5,7 +5,7 @@
         <img :src="flash.img || 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg'" :alt="flash.name" :class="flash.is_booked ? '' : onArtistPage ? 'group-hover:opacity-75' : ''" class="h-[300px] w-full object-cover object-center" />
       </div>
       <div
-        v-if="!onArtistPage && !disableControls"
+        v-if="!onArtistPage"
         @click="openEditDialog(flash)"
         class="absolute top-0 left-0 rounded-full z-10 p-2 bg-primary m-2 cursor-pointer"
       >
@@ -27,7 +27,7 @@
         <p class="text-green-500 font-bold text-xl">Réservé</p>
       </div>
     </div>
-    <Dialog ref="DialogConfirmDelete" v-if="!onArtistPage && !disableControls">
+    <Dialog ref="DialogConfirmDelete" v-if="!onArtistPage">
       <template #title>
         <p class="text-red-500">Supprimer le flash</p>
       </template>
@@ -66,11 +66,6 @@ const props = defineProps({
   flash: {
     type: Object,
     required: true,
-  },
-  disableControls: {
-    type: Boolean,
-    required: false,
-    default: false,
   },
   onArtistPage: {
     type: Boolean,
