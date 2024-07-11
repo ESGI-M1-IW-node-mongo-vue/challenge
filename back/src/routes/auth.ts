@@ -35,4 +35,16 @@ api.post("/", async (c) => {
   }
 });
 
+api.get("/me", async (c) => {
+  try {
+    const token = c.req.header("Authorization")?.split(" ")[1] ?? "";
+    const { payload: decoded } = decode(token);
+    const artist = await Artist.findOne({ google_id: decoded.sub });
+    return c.json(artist);
+  } catch (error: any) {
+    console.error(error);
+    return c.json(error._message, 400);
+  }
+});
+
 export default api;

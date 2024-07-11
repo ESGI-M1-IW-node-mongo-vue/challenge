@@ -71,6 +71,7 @@ api.post("/flashs", async (c) => {
   const updateQuery = {
     $addToSet: {
       flashs: _id,
+      styles: body.style,
     },
   };
   const tryToUpdate = await Artist.findOneAndUpdate(
