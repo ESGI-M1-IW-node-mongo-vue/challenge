@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { Artist } from "../models/artists";
 import { isValidObjectId } from "mongoose";
+import { decode } from "hono/jwt";
 
 const api = new Hono().basePath("/artists");
 
@@ -9,7 +10,7 @@ api.get("/", async (c) => {
   const googleId = c.req.query("googleId");
 
   if (!styleQuery && !googleId) {
-    return c.json(await Artist.find().populate("styles"));
+    return c.json(await Artist.find().populate("styles").populate("flashs"));
   }
 
   if (styleQuery) {
@@ -26,7 +27,20 @@ api.get("/", async (c) => {
     return c.json(oneArt);
   }
 
-  return c.json({ msg: "ObjectId malformed" }, 400);
+  const bearer = c.req.header("Authorization");
+  if (bearer) {
+    const token = bearer.split(" ")[1];
+    const { payload: decoded }: any = decode(token);
+    const artist = await Artist.findOne({ google_id: decoded.sub });
+
+    return c.json(artist)
+  }
+
+  if (!styleQuery && !googleId) {
+    return c.json(await Artist.find());
+  }
+
+  return c.json({ msg: "Unauthorized" }, 401);
 });
 
 api.get("/:id", async (c) => {
