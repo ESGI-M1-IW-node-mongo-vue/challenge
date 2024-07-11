@@ -122,7 +122,7 @@ watch(route, () => {
     : "http://localhost:3000/api/artists";
 
   fetch(
-    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`,
+    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
   )
     .then((res) => res.json())
     .then((data) => (console.log(data), (allArtists.value = data)));
@@ -131,4 +131,8 @@ watch(route, () => {
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
   .then((data) => (styles.value = data));
+
+fetch("http://localhost:3000/api/artists")
+  .then((res) => res.json())
+  .then((data) => (allArtists.value = data));
 </script>
