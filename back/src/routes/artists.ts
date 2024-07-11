@@ -8,10 +8,11 @@ import { SaveOnS3 } from "../aws-s3";
 const api = new Hono().basePath("/artists");
 
 api.get("/", async (c) => {
-  const filter = {} as any;
+  let filter = {} as any;
   const populate = [];
 
   const styleQuery = c.req.query("style");
+  const locationQuery = c.req.query("location");
   let googleId = c.req.query("googleId") ?? "";
   const bearer = c.req.header("Authorization");
 
@@ -29,7 +30,21 @@ api.get("/", async (c) => {
   if (googleId) {
     filter["google_id"] = googleId;
   }
-  console.log(filter, populate);
+
+  if (locationQuery) {
+    filter = {
+      $or: [
+        { address: { $regex: locationQuery, $options: "i" } },
+        {
+          name: {
+            $regex: locationQuery,
+            $options: "i",
+          },
+        },
+      ],
+    };
+  }
+
   return c.json(await Artist.find(filter).populate([...populate]));
 });
 
