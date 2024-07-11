@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { Artist } from "../models/artists";
 import { isValidObjectId } from "mongoose";
 import { decode } from "hono/jwt";
+import { Flash } from "../models/flashs";
+import { SaveOnS3 } from "../aws-s3";
 
 const api = new Hono().basePath("/artists");
 
@@ -10,6 +12,7 @@ api.get("/", async (c) => {
   const populate = [];
 
   const styleQuery = c.req.query("style");
+  const populateQuery = c.req.query("populate");
   let googleId = c.req.query("googleId") ?? "";
   const bearer = c.req.header("Authorization");
 
@@ -27,7 +30,7 @@ api.get("/", async (c) => {
   if (googleId) {
     filter["google_id"] = googleId;
   }
-
+  console.log(filter, populate);
   return c.json(await Artist.find(filter).populate([...populate]));
 });
 
@@ -52,6 +55,37 @@ api.post("/", async (c) => {
   }
 });
 
+api.post("/flashs", async (c) => {
+  const bearer = c.req.header("Authorization");
+  const body = await c.req.parseBody();
+  body.img = await SaveOnS3(body["img"] as File);
+
+  if (!bearer) return c.json({ msg: "Unauthorized" }, 401);
+
+  const token = bearer.split(" ")[1];
+  const artistId = decode(token).payload.sub as unknown as string;
+
+  const newFlash = new Flash(body);
+  const saveFlash = await newFlash.save();
+  const { _id } = saveFlash;
+
+  const updateQuery = {
+    $addToSet: {
+      flashs: _id,
+    },
+  };
+  const tryToUpdate = await Artist.findOneAndUpdate(
+    {
+      google_id: artistId,
+    },
+    updateQuery,
+    {
+      new: true,
+    },
+  );
+  return c.json(tryToUpdate);
+});
+
 api.put("/:id", async (c) => {
   const _id = c.req.param("id");
   const body = await c.req.json();
@@ -64,7 +98,6 @@ api.put("/:id", async (c) => {
   const tryToUpdate = await Artist.findOneAndUpdate(q, updateQuery, {
     new: true,
   });
-  return c.json(tryToUpdate, 200);
 });
 
 api.patch("/:id", async (c) => {
