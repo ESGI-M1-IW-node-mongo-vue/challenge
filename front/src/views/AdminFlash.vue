@@ -33,7 +33,6 @@ const flashs = ref([]);
 const showEditDialog = ref(false);
 const showCreateDialog = ref(false);
 const selectedFlash = ref(null);
-const userFlashs = ref(null)
 
 const fetchFlashs = async () => {
   await fetch("http://localhost:3000/api/artists",{
@@ -42,7 +41,7 @@ const fetchFlashs = async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }}).then(async (res) => {
       const resultJson = await res.json()
-      userFlashs.value = resultJson
+      flashs.value = resultJson[0].flashs
     })
 
 };
