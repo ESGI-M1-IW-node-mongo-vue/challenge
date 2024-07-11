@@ -13,18 +13,18 @@
       <div class="flex gap-4 justify-center" :class="props.artistPage ? 'flex-col' : ''">
         <div class="flex gap-2">
           <svg-icon
-              type="mdi"
-              :path="mdiMapMarker"
-              class="text-orange-500"
+            type="mdi"
+            :path="mdiMapMarker"
+            class="text-orange-500"
           ></svg-icon>
           <p>{{ artist.address }}</p>
         </div>
         <p v-if="!props.artistPage">|</p>
         <div class="flex gap-2">
           <svg-icon
-              type="mdi"
-              :path="mdiStar"
-              class="text-orange-500"
+            type="mdi"
+            :path="mdiStar"
+            class="text-orange-500"
           ></svg-icon>
           <p></p>
         </div>
@@ -44,11 +44,11 @@
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <button
-            v-for="style in artist.styles"
-            :key="style"
-            class="px-4 py-2 border rounded-full text-gray-700 bg-white"
+          v-for="style in artist.styles"
+          :key="style"
+          class="px-4 py-2 border rounded-full text-gray-700 bg-white capitalize"
         >
-          {{ style }}
+          {{ style.name }}
         </button>
       </div>
     </div>
@@ -82,13 +82,13 @@ import Reservation from "@/components/Reservation.vue";
 const props = defineProps({
   artist: {
     type: Object,
-    required: true
+    required: true,
   },
-  artistPage:{
-    type:Boolean,
+  artistPage: {
+    type: Boolean,
     required: false,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const DialogContactArtist = ref(null)
