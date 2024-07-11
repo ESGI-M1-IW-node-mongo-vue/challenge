@@ -3,6 +3,7 @@ import { Artist } from "../models/artists";
 import { isValidObjectId } from "mongoose";
 import { decode } from "hono/jwt";
 import { Flash } from "../models/flashs";
+import { SaveOnS3 } from "../aws-s3";
 
 const api = new Hono().basePath("/artists");
 
@@ -56,7 +57,8 @@ api.post("/", async (c) => {
 
 api.post("/flashs", async (c) => {
   const bearer = c.req.header("Authorization");
-  const body = await c.req.json();
+  const body = await c.req.parseBody();
+  body.img = await SaveOnS3(body["img"] as File);
 
   if (!bearer) return c.json({ msg: "Unauthorized" }, 401);
 
