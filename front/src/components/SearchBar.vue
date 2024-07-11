@@ -11,7 +11,7 @@
       v-model="selectedStyle"
     >
       <option value="">Sélectionner style</option>
-      <option v-for="style in styles" :key="style._id" :value="style.name">
+      <option v-for="style in styles" :key="style._id" :value="style._id">
         {{ style.name }}
       </option>
     </select>

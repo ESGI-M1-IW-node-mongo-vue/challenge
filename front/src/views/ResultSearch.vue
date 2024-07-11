@@ -3,9 +3,7 @@
     <div
       class="bg-[url('.././assets/img/searchBackgroud.png')] h-72 flex items-center flex-col gap-5 justify-center"
     >
-      <h1 class="text-3xl text-white">
-        Trouvez un flash et un tatoueur près de chez vous
-      </h1>
+      <h1 class="text-3xl text-white">Trouvez un flash près de chez vous</h1>
       <SearchBar />
     </div>
 
@@ -62,7 +60,19 @@ const allArtists = ref([]);
 
 const route = useRoute();
 
-console.log("Route:", route.query);
+const location = route.query.location;
+const style = route.query.style;
+
+const searchParams = new URLSearchParams();
+
+if (location) searchParams.append("location", location);
+if (style) searchParams.append("style", style);
+
+fetch(
+  `http://localhost:3000/api/flashs${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
+)
+  .then((res) => res.json())
+  .then((data) => (console.log(data), (allArtists.value = data)));
 
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
