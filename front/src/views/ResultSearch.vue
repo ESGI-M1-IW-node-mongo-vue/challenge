@@ -12,8 +12,8 @@
         <Switch
           v-model="isFlash"
           :class="[
-            isFlash ? 'bg-indigo-600' : 'bg-gray-200',
-            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+            isFlash ? 'bg-orange-500' : 'bg-gray-200',
+            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2',
           ]"
         >
           <span class="sr-only">Toggle flash</span>
@@ -63,7 +63,11 @@
               v-for="style in styles"
               :key="style.id"
               @click="filterStyle(style)"
-              class="px-4 py-2 border rounded-full text-gray-700 bg-white capitalize"
+              class="px-4 py-2 border rounded-full capitalize"
+              :class="{
+                'bg-orange-500 text-white': style._id === route.query.style,
+                'bg-gray-200 text-gray-700': style._id !== route.query.style,
+              }"
             >
               {{ style.name }}
             </button>
@@ -90,6 +94,15 @@ const route = useRoute();
 const router = useRouter();
 
 const filterStyle = (clickedStyle) => {
+  if (clickedStyle._id === route.query.style) {
+    router.push({
+      query: {
+        ...route.query,
+        style: undefined,
+      },
+    });
+    return;
+  }
   router.push({
     query: {
       ...route.query,
@@ -125,7 +138,7 @@ watch(route, () => {
     `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`,
   )
     .then((res) => res.json())
-    .then((data) => (console.log(data), (allArtists.value = data)));
+    .then((data) => (allArtists.value = data));
 });
 
 fetch("http://localhost:3000/api/styles")
