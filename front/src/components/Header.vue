@@ -21,34 +21,7 @@
         <h2 class="text-white mb-10 text-xl">
           La plus grande sélection de flash prêts à vous accueillir
         </h2>
-        <div class="flex bg-white rounded-full mb-32">
-          <input
-            type="text"
-            placeholder="Ville, code postal, tatoueur"
-            class="rounded-full rounded-r-none pl-4 border-r-2 sm:w-96 w-20 focus:outline-none"
-            v-model="location"
-          />
-          <select
-            class="rounded-full capitalize rounded-l-none sm:w-56 w-20 focus:outline-none pl-3"
-            v-model="selectedStyle"
-          >
-            <option value="">Sélectionner style</option>
-            <option
-              v-for="style in styles"
-              :key="style._id"
-              :value="style.name"
-            >
-              {{ style.name }}
-            </option>
-          </select>
-          <RouterLink
-            :to="searchUrl"
-            class="flex bg-primary m-1 p-3 rounded-full text-white hover:bg-opacity-50 transition-all ease-out"
-          >
-            <svg-icon type="mdi" :path="mdiMagnify"></svg-icon>
-            Rechercher
-          </RouterLink>
-        </div>
+        <SearchBar class="mb-32" />
         <h3 class="text-white text-2xl">
           Réservez votre futur flash en 3 clics
         </h3>
@@ -100,19 +73,5 @@
 <script setup>
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiCalendarBlankMultiple, mdiMagnify, mdiMessageFast } from "@mdi/js";
-import { computed, ref } from "vue";
-
-const styles = ref([]);
-const selectedStyle = ref({});
-const location = ref("");
-const searchUrl = computed(
-  () => `/results?style=${selectedStyle.value}&location=${location.value}`
-);
-
-fetch("http://localhost:3000/api/styles")
-  .then((res) => res.json())
-  .then((data) => {
-    styles.value = data;
-    selectedStyle.value = "";
-  });
+import SearchBar from "@/components/SearchBar.vue";
 </script>
