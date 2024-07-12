@@ -135,7 +135,7 @@ function fetchResults() {
 
   if (location) searchParams.append("location", location);
   if (style) searchParams.append("style", style);
-  searchParams.append("populate", "style");
+  searchParams.append("populate", "styles");
 
   const fetchUrl = isFlash.value
     ? "http://localhost:3000/api/flashs"
