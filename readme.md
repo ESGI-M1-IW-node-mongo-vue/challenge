@@ -1,51 +1,13 @@
-### Accueil
+### Instalation
 
-- Barre de recherche : par CP, ville, artiste, styles, par dates
-- un bouton login pour les tatoueurs 
-- sections avec étapes à suivre
-- sections liste des styles avec illustration -> qui fait une recherche sur le style sélectioné 
-- possibilité de recherche par tatoueurs ou par flashs
+## Back
 
-### Résultats 
+```sh
+npm i && npm run dev
+```
 
-- Liste des tatoueurs par rapport à la recherche
-- Filtre par style et par mot clé ( basé sur la description du tatoueur )
-- breadcrumb
+## Front
 
-### Tatoueurs
-
-- Image
-- localisation
-- description
-- galerie photos
-- avis 
-- style 
-- réseaux
-- boutons réserver et téléphone 
-- adresse
-- horraire
-
-### Pop up bouton réserver
-
-- nom
-- prenom
-- adresse mail
-- telephone
-- choix de la date sous forme de liste déroulante ( crénaux de 1 heure )
-
-### Côté admin pour les tatoueurs
-
-- tableaux pour afficher les rdv possibilités de filter par jours / mois
-- possibilités de bloquer / supprimer un crénaux 
-- modifier le profil 
-- nom ----
-- img !!!!!!!!!!!!!!!!!!!!!!
-- desc ------
-- addresse ----
-- tel ------
-- email ------
-
-### Côté admin
-
-- Liste des tatoueurs ( possibilté de supprimer )
-- création de tatoueurs 
+```sh
+npm i && npm run dev
+```

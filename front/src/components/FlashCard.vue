@@ -33,7 +33,7 @@
         <svg-icon :path="mdiPencil" type="mdi" class="text-white" size="20" />
       </div>
       <div
-        v-if="!onArtistPage"
+        v-if="!onArtistPage && !flash.is_booked"
         @click="openDeleteDialog(flash)"
         class="absolute top-0 z-10 right-0 rounded-full p-2 bg-red-500 m-2 cursor-pointer"
       >

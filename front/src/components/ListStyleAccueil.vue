@@ -7,11 +7,7 @@
         </h4>
         <p class="text-xl">Découvrez toutes nos inspirations de tatouages</p>
       </div>
-      <button
-        class="bg-white border-2 border-primary rounded-full px-6 h-1/2 py-2 hover:bg-primary hover:text-white transition-all ease-in"
-      >
-        À Suivre
-      </button>
+
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-8 justify-around items-center"
