@@ -13,6 +13,7 @@ api.get("/", async (c) => {
 
   const styleQuery = c.req.query("style");
   const locationQuery = c.req.query("location");
+  const populateQuery = c.req.query("populate");
   let googleId = c.req.query("googleId") ?? "";
   const bearer = c.req.header("Authorization");
 
@@ -26,6 +27,10 @@ api.get("/", async (c) => {
     filter["styles"] = { $in: styleQuery + "" };
   }
   populate.push({ path: "styles" });
+
+  if (populateQuery) {
+    populate.push({ path: populateQuery + "" });
+  }
 
   if (googleId) {
     filter["google_id"] = googleId;
@@ -68,7 +73,7 @@ api.get("/:id", async (c) => {
 api.get("/flash/:id", async (c) => {
   const _id = c.req.param("id");
 
-  if(!_id){
+  if (!_id) {
     return c.json({ msg: "ObjectId malformed" }, 400);
   }
 
@@ -139,20 +144,23 @@ api.put("/:id", async (c) => {
 api.patch("/:id", async (c) => {
   const _id = c.req.param("id");
   const body = await c.req.json();
-  const q = {
-    _id,
-  };
-  const { categories, ...rest } = body;
+  const { styles, flashs, ...rest } = body;
 
-  const updateQuery = {
-    $addToSet: {
-      categories: categories,
+  const tryToUpdate = await Artist.findOneAndUpdate(
+    {
+      _id,
     },
-    $set: { ...rest },
-  };
-  const tryToUpdate = await Artist.findOneAndUpdate(q, updateQuery, {
-    new: true,
-  });
+    {
+      $addToSet: {
+        styles: styles,
+        flashs: flashs,
+      },
+      $set: { ...rest },
+    },
+    {
+      new: true,
+    },
+  );
   return c.json(tryToUpdate, 200);
 });
 
