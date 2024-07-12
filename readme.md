@@ -1,13 +1,14 @@
-### Instalation
+# Installation
 
 ## Back
 
 ```sh
-npm i && npm run dev
+cd back && npm i && npm run dev
 ```
 
 ## Front
 
 ```sh
-npm i && npm run dev
+cd front && npm i && npm run dev
 ```
+[Front](http://localhost:5173)
