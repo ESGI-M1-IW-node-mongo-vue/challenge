@@ -34,35 +34,15 @@ api.post("/", async (c) => {
 api.put("/:id", async (c) => {
   const _id = c.req.param("id");
   const body = await c.req.json();
-  const q = {
-    _id,
-  };
-  const updateQuery = {
-    ...body,
-  };
-  const tryToUpdate = await Style.findOneAndUpdate(q, updateQuery, {
-    new: true,
-  });
-  return c.json(tryToUpdate, 200);
-});
-
-api.patch("/:id", async (c) => {
-  const _id = c.req.param("id");
-  const body = await c.req.json();
-  const q = {
-    _id,
-  };
-  const { categories, ...rest } = body;
-
-  const updateQuery = {
-    $addToSet: {
-      categories: categories,
+  const tryToUpdate = await Style.findOneAndUpdate(
+    {
+      _id,
     },
-    $set: { ...rest },
-  };
-  const tryToUpdate = await Style.findOneAndUpdate(q, updateQuery, {
-    new: true,
-  });
+    body,
+    {
+      new: true,
+    },
+  );
   return c.json(tryToUpdate, 200);
 });
 
