@@ -9,6 +9,7 @@
           :enable-time-picker="false"
           auto-apply
           :clearable="false"
+          :disabled-week-days="[6, 0]"
         />
         <ListingMeeting :data="allReservations" @refresh="getReservations" :date="date" />
       </div>

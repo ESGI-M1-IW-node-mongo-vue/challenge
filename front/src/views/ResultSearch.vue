@@ -59,6 +59,7 @@
               v-if="isFlash"
             >
               <FlashCard
+                @click="goTo(flash)"
                 on-artist-page
                 v-for="flash in allObject"
                 :key="flash._id"
@@ -165,4 +166,13 @@ fetch("http://localhost:3000/api/styles")
   .then((data) => (styles.value = data));
 
 fetchResults();
+
+const goTo = async function (flash){
+  await fetch(`http://localhost:3000/api/artists/flash/${flash._id}`,{
+    method:"get"
+  }).then(async(result) => {
+    const resultJson = await result.json()
+    await router.push(`/artist/${resultJson._id}`)
+  })
+}
 </script>

@@ -72,9 +72,11 @@ api.get("/flash/:id", async (c) => {
     return c.json({ msg: "ObjectId malformed" }, 400);
   }
 
-  const oneArtist = await Artist.find({
-    
+  const oneArtist = await Artist.findOne({
+    flashs: {$in : _id}
   })
+
+  return c.json(oneArtist)
 });
 
 api.post("/", async (c) => {

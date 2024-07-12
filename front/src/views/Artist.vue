@@ -96,6 +96,11 @@
         <Reservation @closeDialog="closeDialog" :infoFlash="infoOneFlash" />
       </template>
     </Dialog>
+    <ConfirmAlert v-if="confirmAlert" @close="confirmAlert = false">
+      <template #title>
+        Votre flash a bien été reservé
+      </template>
+    </ConfirmAlert>
   </div>
 </template>
 <script setup>
@@ -106,6 +111,7 @@ import Reservation from "@/components/Reservation.vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import Dialog from "@/components/Dialog.vue";
 import { mdiMapMarker, mdiStar, mdiInstagram, mdiLinkedin, mdiTwitter } from "@mdi/js";
+import ConfirmAlert from "@/components/ConfirmAlert.vue";
 
 const route = useRoute();
 
@@ -114,6 +120,7 @@ const flashs = ref([]);
 const infoOneFlash = ref(null);
 
 const DialogContactArtist = ref(null);
+const confirmAlert = ref(false)
 
 const openDialog = function (item) {
   DialogContactArtist.value.open();
@@ -122,6 +129,7 @@ const openDialog = function (item) {
 
 const closeDialog = function () {
   DialogContactArtist.value.close();
+  confirmAlert.value = true
   getFlashs();
 };
 

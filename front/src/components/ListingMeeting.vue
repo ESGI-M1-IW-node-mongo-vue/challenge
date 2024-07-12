@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between">
         <div class="flex flex-col gap-y-2">
           <p class="font-bold text-3xl">Liste de vos rendez-vous :</p>
-          <p class="text-gray-500 text-lg"><span class="text-primary font-bold">{{ props.data.length }}</span> au total</p>
+          <p class="text-gray-500 text-lg"><span class="text-primary font-bold">{{ props.data.filter(x => x.flash).length }}</span> au total</p>
         </div>
         <div class="flex items-center gap-x-2">
           <p class="font-bold">Bloquer des créneaux à cette date : </p>
@@ -24,19 +24,19 @@
         </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
-        <tr v-for="item in props.data" :key="item.email">
+        <tr v-for="item in props.data" :key="item.email" :class="!!item.flash ? '' : 'opacity-50'">
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-            <div class="flex flex-col gap-y-1">
+            <div v-if="!!item.flash" class="flex flex-col gap-y-1">
               <div class="font-medium text-gray-900">{{ item.name_client }} {{ item.lastname_client }}</div>
             </div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-            <div class="flex flex-col gap-y-1">
+            <div v-if="!!item.flash" class="flex flex-col gap-y-1">
               <div class="mt-1 text-gray-500">{{ item.email_client }}</div>
             </div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-            <div class="flex flex-col gap-y-1">
+            <div v-if="!!item.flash" class="flex flex-col gap-y-1">
               <div class="mt-1 text-gray-500">{{ item.phone_client }}</div>
             </div>
           </td>
@@ -46,7 +46,7 @@
             </div>
           </td>
           <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-            <div @click="openDialog(item)" class="text-red-600 hover:text-red-900 cursor-pointer">
+            <div @click="openDialog(item)" class="text-red-600 hover:text-red-900 cursor-pointer !opacity-100">
               <svg-icon type="mdi" :path="mdiCancel"></svg-icon>
             </div
             >
@@ -173,10 +173,10 @@ watch(props,(newVal) => {
 
 const artistId = ref(null)
 
-const block = function (){
+const block = async function (){
   if(!!blockHours.value){
 
-    fetch("https://localhost:3000/api/auth/me",{
+    await fetch("http://localhost:3000/api/auth/me",{
       method:"GET",
       headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -195,10 +195,12 @@ const block = function (){
       "phone_client": 1,
       "artist" : artistId.value
     }
-    fetch("http://localhost:3000/api/reservations",{
+    await fetch("http://localhost:3000/api/reservations",{
       method:"post",
       body: JSON.stringify(body)
     })
+    blockHours.value = null
+    emits('refresh',props.date)
   }
 }
 
