@@ -2,21 +2,25 @@ import { Hono } from "hono";
 import { Flash } from "../models/flashs";
 import { SaveOnS3 } from "../aws-s3";
 import { isValidObjectId } from "mongoose";
-import {Reservation} from "../models/reservations";
-import {Artist} from "../models/artists";
 
 const api = new Hono().basePath("/flashs");
 
 api.get("/", async (c) => {
-  const filter = {} as any;
-
-  const { style } = c.req.query();
+  const filter: Record<string, any> = {};
+  let sortObject: Record<string, any> = {};
+  const { style, sort, order } = c.req.query();
 
   if (style) {
     filter["style"] = style;
   }
 
-  return c.json(await Flash.find(filter));
+  if (sort) {
+    sortObject = {
+      [sort]: order === "asc" ? 1 : -1,
+    };
+  }
+
+  return c.json(await Flash.find(filter).sort(sortObject));
 });
 
 api.get("/:id", async (c) => {
@@ -55,14 +59,13 @@ api.put("/:id", async (c) => {
 });
 
 api.patch("/:id", async (c) => {
-  console.log('lalalal')
+  console.log("lalalal");
   const _id = c.req.param("id");
   const body = await c.req.json();
   const q = {
     _id,
   };
   const { categories, ...rest } = body;
-
 
   const updateQuery = {
     $addToSet: {
