@@ -9,7 +9,7 @@ interface IReservation {
   lastname_client: string;
   email_client: string;
   phone_client: string;
-  flash: IFlash;
+  flash?: IFlash;
   artist: IArtist;
 }
 

@@ -43,6 +43,18 @@ api.get("/:id", async (c) => {
   return c.json({ msg: "ObjectId malformed" }, 400);
 });
 
+api.get("/flash/:id", async (c) => {
+  const _id = c.req.param("id");
+
+  if(!_id){
+    return c.json({ msg: "ObjectId malformed" }, 400);
+  }
+
+  const oneArtist = await Artist.find({
+    
+  })
+});
+
 api.post("/", async (c) => {
   const body = await c.req.json();
   try {

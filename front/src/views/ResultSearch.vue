@@ -59,6 +59,7 @@
               v-if="isFlash"
             >
               <FlashCard
+                @click="goTo(flash)"
                 on-artist-page
                 v-for="flash in allObject"
                 :key="flash._id"
@@ -167,4 +168,8 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => (allObject.value = data));
+
+const goTo = function (flash){
+  console.log(flash)
+}
 </script>

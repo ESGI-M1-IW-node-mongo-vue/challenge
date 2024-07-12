@@ -52,6 +52,7 @@ api.get("/", async (c) => {
 
 api.post("/", async (c) => {
   const body = await c.req.json();
+  console.log(body)
   try {
     const newReservation = new Reservation(body);
     const saveReservation = await newReservation.save();

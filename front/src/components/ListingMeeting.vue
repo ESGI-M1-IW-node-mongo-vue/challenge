@@ -1,9 +1,18 @@
 <template>
   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-y-2" v-if="props.data.length > 0">
-        <p class="font-bold text-3xl">Liste de vos rendez-vous :</p>
-        <p class="text-gray-500 text-lg"><span class="text-primary font-bold">{{ props.data.length }}</span> au total</p>
+      <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-y-2">
+          <p class="font-bold text-3xl">Liste de vos rendez-vous :</p>
+          <p class="text-gray-500 text-lg"><span class="text-primary font-bold">{{ props.data.length }}</span> au total</p>
+        </div>
+        <div class="flex items-center gap-x-2">
+          <p class="font-bold">Bloquer des créneaux à cette date : </p>
+          <select v-model="blockHours">
+            <option v-for="item in hours" :value="item.value" :disabled="item.available">{{item.text}}</option>
+          </select>
+          <div @click="block()" class="p-2 bg-red-500 text-white cursor-pointer">Bloquer</div>
+        </div>
       </div>
       <table class="min-w-full divide-y divide-gray-300" v-if="props.data.length > 0">
         <thead>
@@ -45,9 +54,6 @@
         </tr>
         </tbody>
       </table>
-      <div v-else class="flex justify-center">
-        <p class="font-bold text-lg">Pas de rendez-vous à cette date</p>
-      </div>
     </div>
     <Dialog ref="DialogConfirmDelete">
       <template #title>
@@ -68,19 +74,64 @@
 <script setup>
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiCancel } from '@mdi/js';
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import Dialog from "@/components/Dialog.vue";
-import { format,parseISO } from "date-fns";
+import {addHours, format, formatISO, getHours, parseISO, setHours, setMinutes} from "date-fns";
 import {fr} from "date-fns/locale/fr";
 
 const props = defineProps({
-  data:{type:Array,required: true}
+  data:{type:Array,required: true},
+  date:{type:Date,required:true}
 })
 
 const emits = defineEmits(['refresh'])
 
 const DialogConfirmDelete = ref(null)
 const infosDialogDelete = ref(null)
+const blockHours = ref(null)
+
+const hours = ref([
+  {
+    text:"8h à 9h",
+    value: 8,
+    available: true
+  },
+  {
+    text:"9h à 10h",
+    value: 9,
+    available: true
+  },
+  {
+    text:"10h à 11h",
+    value: 10,
+    available: true
+  },
+  {
+    text:"11h à 12h",
+    value: 11,
+    available: true
+  },
+  {
+    text:"13h à 14h",
+    value: 13,
+    available: true
+  },
+  {
+    text:"14h à 15h",
+    value: 14,
+    available: true
+  },
+  {
+    text: "15h à 16h",
+    value: 15,
+    available: true
+  },
+  {
+    text: "16h à 17h",
+    value: 16,
+    available: true
+  }
+])
 
 const openDialog = function(item){
   infosDialogDelete.value = item
@@ -104,6 +155,51 @@ const cancelMeeting = async function (infosDialogDelete){
 
 const setFormat = function (item){
   return format(parseISO(item.start_date),"HH'h'") + " à " + format(parseISO(item.end_date),"HH'h'")
+}
+
+watch(props,(newVal) => {
+  const reservations = newVal.data
+  const tabHours = reservations.map(x => {
+    return getHours(parseISO(x.start_date))
+  })
+  hours.value = hours.value.map(x => {
+    return {
+      text: x.text,
+      value: x.value,
+      available: tabHours.includes(x.value)
+    }
+  })
+})
+
+const artistId = ref(null)
+
+const block = function (){
+  if(!!blockHours.value){
+
+    fetch("https://localhost:3000/api/auth/me",{
+      method:"GET",
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }).then(async(result) => {
+      const resultJson = await result.json()
+      artistId.value = resultJson._id
+    })
+
+    const body = {
+      "start_date": formatISO(setMinutes(setHours(props.date,blockHours.value),0)),
+      "end_date": formatISO(addHours(setMinutes(setHours(props.date,blockHours.value),0),1)),
+      "name_client": "BLOQUER",
+      "lastname_client": "BLOQUER",
+      "email_client": "BLOQUER",
+      "phone_client": 1,
+      "artist" : artistId.value
+    }
+    fetch("http://localhost:3000/api/reservations",{
+      method:"post",
+      body: JSON.stringify(body)
+    })
+  }
 }
 
 </script>
