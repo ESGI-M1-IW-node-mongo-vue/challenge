@@ -16,7 +16,7 @@
         class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center"
       >
         <h1 class="text-white mb-4 text-6xl">
-          Trouver votre flash et votre tatoueur
+          Trouvez votre flash et votre tatoueur
         </h1>
         <h2 class="text-white mb-10 text-xl">
           La plus grande sélection de flash prêts à vous accueillir
