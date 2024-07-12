@@ -87,13 +87,14 @@
 
 <script setup>
 import SvgIcon from "@jamescoyle/vue-icon";
-import {mdiClose, mdiMenu} from "@mdi/js";
-import {ref} from "vue";
-import {Dialog, DialogPanel} from "@headlessui/vue";
+import { mdiClose, mdiMenu } from "@mdi/js";
+import { ref } from "vue";
+import { Dialog, DialogPanel } from "@headlessui/vue";
 
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Recherche", href: "/result" },
+  { name: "Découvrir", href: "/discover" },
 ];
 
 const mobileMenuOpen = ref(false);
