@@ -140,20 +140,23 @@ api.put("/:id", async (c) => {
 api.patch("/:id", async (c) => {
   const _id = c.req.param("id");
   const body = await c.req.json();
-  const q = {
-    _id,
-  };
-  const { categories, ...rest } = body;
+  const { styles, flashs, ...rest } = body;
 
-  const updateQuery = {
-    $addToSet: {
-      categories: categories,
+  const tryToUpdate = await Artist.findOneAndUpdate(
+    {
+      _id,
     },
-    $set: { ...rest },
-  };
-  const tryToUpdate = await Artist.findOneAndUpdate(q, updateQuery, {
-    new: true,
-  });
+    {
+      $addToSet: {
+        styles: styles,
+        flashs: flashs,
+      },
+      $set: { ...rest },
+    },
+    {
+      new: true,
+    },
+  );
   return c.json(tryToUpdate, 200);
 });
 
