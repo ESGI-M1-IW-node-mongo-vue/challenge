@@ -27,6 +27,13 @@
         />
         <p :class="item.selected ? 'text-white' : ''">{{ item.text }}</p>
       </div>
+      <button
+        class="flex items-center gap-x-4 cursor-pointer p-4"
+        @click="logout()"
+      >
+        <svg-icon :path="mdiLogout" type="mdi" class="text-red-500" />
+        <p class="text-red-500">Déconnexion</p>
+      </button>
     </div>
   </div>
 </template>
@@ -37,6 +44,7 @@ import {
   mdiBookOutline,
   mdiDrawPen,
   mdiKeyboardBackspace,
+  mdiLogout,
 } from "@mdi/js";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -90,4 +98,9 @@ fetch("http://localhost:3000/api/auth/me", {
 const goTo = function (routeName) {
   router.push({ name: routeName });
 };
+
+function logout() {
+  localStorage.removeItem("token");
+  router.push({ name: "home" });
+}
 </script>
