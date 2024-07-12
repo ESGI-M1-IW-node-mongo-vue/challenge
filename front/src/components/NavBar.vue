@@ -21,19 +21,23 @@
         </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <a
+        <RouterLink
           v-for="item in navigation"
           :key="item.name"
-          :href="item.href"
+          :to="item.href"
           class="text-sm font-semibold leading-6 text-gray-900"
-          >{{ item.name }}</a
+          >{{ item.name }}
+        </RouterLink>
+        <a href="/#news" class="text-sm font-semibold leading-6 text-gray-900"
+          >Newsletters</a
         >
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a
-          href="/admin/meeting"
+        <RouterLink
+          to="/admin/meeting"
           class="text-sm font-semibold leading-6 text-gray-900"
-          >Vous êtes tatoueurs <span aria-hidden="true">&rarr;</span></a
+          >Vous êtes tatoueurs
+          <span aria-hidden="true">&rarr;</span></RouterLink
         >
       </div>
     </nav>
@@ -59,20 +63,20 @@
         <div class="mt-6 flow-root">
           <div class="-my-6 divide-y divide-gray-500/10">
             <div class="space-y-2 py-6">
-              <a
+              <RouterLink
                 v-for="item in navigation"
                 :key="item.name"
-                :href="item.href"
+                :to="item.href"
                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >{{ item.name }}</a
-              >
+                >{{ item.name }}
+              </RouterLink>
             </div>
             <div class="py-6">
-              <a
-                href="#"
+              <RouterLink
+                to="/admin/meeting"
                 class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >Vous êtes tatoueurs</a
-              >
+                >Vous êtes tatoueurs
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -90,7 +94,7 @@ import { Dialog, DialogPanel } from "@headlessui/vue";
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Recherche", href: "/result" },
-  { name: "Newsletters", href: "/#news" },
+  { name: "Découvrir", href: "/discover" },
 ];
 
 const mobileMenuOpen = ref(false);

@@ -1,12 +1,12 @@
 <template>
   <RouterLink
     :to="'/artist/' + artist._id"
-    class="flex flex-col"
-    :class="props.artistPage ? 'gap-4' : 'gap-6 bg-white'"
+    class="flex flex-col rounded-2xl"
+    :class="props.artistPage ? 'gap-4 rounded-2xl' : 'gap-6 bg-white rounded-2xl'"
   >
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center mt-9 rounded-2xl">
       <img
-        class="h-36 w-1/2 object-cover"
+        class="h-36 w-1/3 object-cover rounded-2xl"
         :src="artist.profile_img"
         :alt="artist.name"
         referrerpolicy="no-referrer"
@@ -14,7 +14,7 @@
     </div>
     <div
       class="flex flex-col"
-      :class="props.artistPage ? 'gap-2' : 'gap-6 p-5 bg-white'"
+      :class="props.artistPage ? 'gap-2' : 'gap-6 p-5'"
     >
       <p class="text-xl font-semibold text-center">{{ artist.name }}</p>
       <div
@@ -29,14 +29,14 @@
           ></svg-icon>
           <p>{{ artist.address }}</p>
         </div>
-        <p v-if="!props.artistPage">|</p>
+        <p v-if="!props.artistPage" class="text-gray-400">|</p>
         <div class="flex gap-2">
           <svg-icon
             type="mdi"
             :path="mdiStar"
             class="text-orange-500"
           ></svg-icon>
-          <p></p>
+          <p>4.99 (20 avis)</p>
         </div>
       </div>
       <p v-if="!props.artistPage" :class="props.artistPage ? '' : 'mx-4'">{{ artist.description }}</p>

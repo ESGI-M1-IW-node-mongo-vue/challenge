@@ -6,6 +6,7 @@ import Profile from "@/views/Profile.vue";
 import ResultSearch from "@/views/ResultSearch.vue";
 import Artist from "@/views/Artist.vue";
 import AdminFlash from "@/views/AdminFlash.vue";
+import Discover from "@/views/Discover.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,11 @@ const router = createRouter({
       path: "/artist/:id",
       name: "artist",
       component: Artist,
+    },
+    {
+      path: "/discover",
+      name: "discover",
+      component: Discover,
     },
     {
       path: "/admin",

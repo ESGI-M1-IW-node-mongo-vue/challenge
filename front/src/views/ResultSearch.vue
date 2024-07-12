@@ -59,7 +59,6 @@
               v-if="isFlash"
             >
               <FlashCard
-                @click="goTo(flash)"
                 on-artist-page
                 v-for="flash in allObject"
                 :key="flash._id"
@@ -102,12 +101,12 @@ import { useRoute, useRouter } from "vue-router";
 import SearchBar from "@/components/SearchBar.vue";
 import { Switch } from "@headlessui/vue";
 
-const isFlash = ref(false);
+const route = useRoute();
+const isFlash = ref(route.query.flashOrArtist === "flash");
 
 const styles = ref([]);
 const allObject = ref([]);
 
-const route = useRoute();
 const router = useRouter();
 
 const filterStyle = (clickedStyle) => {
@@ -128,16 +127,7 @@ const filterStyle = (clickedStyle) => {
   });
 };
 
-watch(isFlash, () => {
-  router.push({
-    query: {
-      ...route.query,
-      flashOrArtist: isFlash.value ? "flash" : "artist",
-    },
-  });
-});
-
-watch(route, () => {
+function fetchResults() {
   const location = route.query.location;
   const style = route.query.style;
 
@@ -152,24 +142,27 @@ watch(route, () => {
     : "http://localhost:3000/api/artists";
 
   fetch(
-    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`
+    `${fetchUrl}${searchParams.toString() ? "?" : ""}${searchParams.toString()}`,
   )
     .then((res) => res.json())
     .then((data) => (allObject.value = data));
+  return { location, style };
+}
+
+watch(isFlash, () => {
+  router.push({
+    query: {
+      ...route.query,
+      flashOrArtist: isFlash.value ? "flash" : "artist",
+    },
+  });
 });
+
+watch(route, () => fetchResults());
 
 fetch("http://localhost:3000/api/styles")
   .then((res) => res.json())
   .then((data) => (styles.value = data));
 
-fetch(
-  "http://localhost:3000/api/artists?" +
-    new URLSearchParams({ ...route.query, populate: "style" }).toString(),
-)
-  .then((res) => res.json())
-  .then((data) => (allObject.value = data));
-
-const goTo = function (flash){
-  console.log(flash)
-}
+fetchResults();
 </script>
