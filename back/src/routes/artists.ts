@@ -33,17 +33,24 @@ api.get("/", async (c) => {
 
   if (locationQuery) {
     filter = {
-      $or: [
-        { address: { $regex: locationQuery, $options: "i" } },
+      $and: [
+        { ...filter },
         {
-          name: {
-            $regex: locationQuery,
-            $options: "i",
-          },
+          $or: [
+            { address: { $regex: locationQuery, $options: "i" } },
+            {
+              name: {
+                $regex: locationQuery,
+                $options: "i",
+              },
+            },
+          ],
         },
       ],
     };
   }
+
+  console.log("🍱 ====>", filter);
 
   return c.json(await Artist.find(filter).populate([...populate]));
 });
