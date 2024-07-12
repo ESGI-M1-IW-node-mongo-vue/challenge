@@ -13,6 +13,7 @@ api.get("/", async (c) => {
 
   const styleQuery = c.req.query("style");
   const locationQuery = c.req.query("location");
+  const populateQuery = c.req.query("populate");
   let googleId = c.req.query("googleId") ?? "";
   const bearer = c.req.header("Authorization");
 
@@ -26,6 +27,10 @@ api.get("/", async (c) => {
     filter["styles"] = { $in: styleQuery + "" };
   }
   populate.push({ path: "styles" });
+
+  if (populateQuery) {
+    populate.push({ path: populateQuery + "" });
+  }
 
   if (googleId) {
     filter["google_id"] = googleId;
@@ -68,13 +73,11 @@ api.get("/:id", async (c) => {
 api.get("/flash/:id", async (c) => {
   const _id = c.req.param("id");
 
-  if(!_id){
+  if (!_id) {
     return c.json({ msg: "ObjectId malformed" }, 400);
   }
 
-  const oneArtist = await Artist.find({
-    
-  })
+  const oneArtist = await Artist.find({});
 });
 
 api.post("/", async (c) => {
