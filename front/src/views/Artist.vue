@@ -36,7 +36,6 @@
             {{ artist.description }}
           </p>
           <div class="mt-4 w-full h-[1px] bg-gray-500"></div>
-          <p>{{ artist.description }}</p>
           <div class="flex flex-wrap px-2 gap-2">
             <span
               v-for="style in artist.styles"
@@ -77,13 +76,13 @@
   </div>
 </template>
 <script setup>
-import {ref} from "vue";
-import {useRoute} from "vue-router";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 import FlashCard from "@/components/FlashCard.vue";
 import Reservation from "@/components/Reservation.vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import Dialog from "@/components/Dialog.vue";
-import {mdiMapMarker, mdiStar} from "@mdi/js";
+import { mdiMapMarker, mdiStar } from "@mdi/js";
 
 const route = useRoute();
 
