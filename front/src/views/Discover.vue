@@ -116,9 +116,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { IArtist, IFlash } from "../../../back/src/models/flashs";
 
-const flashes = ref<IFlash[]>([]);
+const flashes = ref<[]>([]);
 
 fetch("http://localhost:3000/api/artists?populate=flashs", { method: "GET" })
   .then((response) => response.json())
