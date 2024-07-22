@@ -9,7 +9,7 @@ api.post("/", async (c) => {
     const body = await c.req.json();
     const { payload: decoded }: any = decode(body.credential);
 
-    const ar  tist = await Artist.findOne({ google_id: decoded.sub });
+    const artist = await Artist.findOne({ google_id: decoded.sub });
     if (!artist) {
       const newArtist = new Artist({
         google_id: decoded.sub,
