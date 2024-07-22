@@ -11,7 +11,7 @@ import flashs from "./routes/flashs";
 const app = new Hono();
 await DbConnect();
 
-const port = 80;
+const port = 3000
 console.log(`Server is running on port ${port}`);
 
 app.use("/api/*", cors());
